@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ENV_FILE = path.join(process.cwd(), '.env.local');
+
+function readAdminPassword(): string {
+  if (fs.existsSync(ENV_FILE)) {
+    for (const line of fs.readFileSync(ENV_FILE, 'utf-8').split('\n')) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('ADMIN_PASSWORD=')) {
+        return trimmed.slice('ADMIN_PASSWORD='.length).trim();
+      }
+    }
+  }
+  return process.env.ADMIN_PASSWORD || '';
+}
 
 // ── Rate-limit store (in-memory, per IP) ─────────────────────────────────────
 // Resets on server restart. Good enough for a single-process deployment.
@@ -45,7 +61,7 @@ function clearAttempts(ip: string) {
 
 // ── Token helpers ─────────────────────────────────────────────────────────────
 function makeToken(): string {
-  const pass   = process.env.ADMIN_PASSWORD   || '';
+  const pass   = readAdminPassword();
   const secret = process.env.ADMIN_SECRET     || 'api-docs-secret';
   return crypto.createHmac('sha256', secret).update(pass).digest('hex');
 }
@@ -80,7 +96,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Bad request.' }, { status: 400 });
   }
 
-  const expected = process.env.ADMIN_PASSWORD || '';
+  const expected = readAdminPassword();
   const passwordMatches = safeEqual(password, expected);
 
   if (!passwordMatches) {

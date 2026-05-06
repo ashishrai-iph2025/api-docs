@@ -13,6 +13,7 @@ export interface SupportContact {
 
 export interface ContentData {
   endpoints?: Record<string, Partial<Endpoint>>;
+  endpointOrder?: string[];
   sectionTitles?: Record<string, string>;
   introduction?: {
     bannerText?: string;
@@ -61,7 +62,8 @@ export function writeContent(data: ContentData) {
 }
 
 export function getEndpoints(): Endpoint[] {
-  const overrides = read().endpoints || {};
+  const data = read();
+  const overrides = data.endpoints || {};
   const mergedStatic = staticEndpoints.map((ep) => {
     const ov = overrides[ep.id];
     if (!ov) return ep;
@@ -83,19 +85,33 @@ export function getEndpoints(): Endpoint[] {
       method: endpoint.method ?? 'POST',
       path: endpoint.path ?? '/',
       description: endpoint.description ?? '',
+      active: endpoint.active !== false,
       headers: endpoint.headers,
       requestBody: endpoint.requestBody,
       parameters: endpoint.parameters ?? [],
       responses: endpoint.responses ?? [{ status: 200, label: 'Success', body: '{}' }],
     }));
 
-  return [...mergedStatic, ...customEndpoints];
+  const all = [...mergedStatic, ...customEndpoints];
+
+  const order = data.endpointOrder;
+  if (!order || order.length === 0) return all;
+
+  const byId = new Map(all.map((ep) => [ep.id, ep]));
+  const ordered = order.flatMap((id) => (byId.has(id) ? [byId.get(id)!] : []));
+  const orderedIds = new Set(order);
+  const remaining = all.filter((ep) => !orderedIds.has(ep.id));
+  return [...ordered, ...remaining];
+}
+
+export function getActiveEndpoints(): Endpoint[] {
+  return getEndpoints().filter((ep) => ep.active !== false);
 }
 
 export function getNavGroups(): NavGroup[] {
   const data = read();
   const titles = data.sectionTitles || {};
-  const endpoints = getEndpoints();
+  const endpoints = getActiveEndpoints();
   return [
     {
       title: 'Getting Started',

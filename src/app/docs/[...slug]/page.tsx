@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { notFound } from 'next/navigation';
-import { getEndpoints, getSections, getContentData } from '@/lib/content-store';
+import { getActiveEndpoints as getEndpoints, getSections, getContentData } from '@/lib/content-store';
 import { tocForCustomContent, tocForEndpoint } from '@/lib/toc';
 import { DocPage } from '@/components/DocPage';
 import { EndpointCard } from '@/components/EndpointCard';

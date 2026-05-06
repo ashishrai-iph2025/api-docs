@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getEndpoints } from '@/lib/content-store';
+import { getActiveEndpoints as getEndpoints } from '@/lib/content-store';
 
 export const dynamic = 'force-dynamic';
 

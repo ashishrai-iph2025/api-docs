@@ -386,6 +386,116 @@
         "Content-Type": "application/json",
         "Authorization": "Bearer {{access_token}}"
       }
+    },
+    "getclientdetails": {
+      "id": "getclientdetails",
+      "title": "Get Client Details",
+      "path": "/GetClientDetails",
+      "method": "GET",
+      "description": "Retrieve data from GetClientDetails.",
+      "parameters": [],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n    \"assets\": [\n        \"AssetName1\",\n        \"AssetName2\",\n        \"AssetName3\",\n...\n    ],\n    \"copyrightOwners\": [\n        \"copyrightOwners1\",\n        \"copyrightOwners2\",..\n    ]\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "getallplatforms": {
+      "id": "getallplatforms",
+      "title": "Get All Platforms",
+      "path": "/GetAllPlatforms",
+      "method": "GET",
+      "description": "Retrieve data from GetAllPlatforms.",
+      "parameters": [],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "[\n    \"Facebook\",\n    \"Telegram\",\n    \"Torrent\",\n    \"Twitter\",\n    \"YouTube\",\n...............\n]"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "getallgenres": {
+      "id": "getallgenres",
+      "title": "Get All Genres",
+      "path": "/GetAllGenres",
+      "method": "GET",
+      "description": "Retrieve data from GetAllGenres.",
+      "parameters": [],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "[\n    \"Credentials\",\n    \"Movies\",\n    \"Sports\",\n    \"Originals\",\n.............\n]"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
     }
+  },
+  "endpointOrder": [
+    "getallplatforms",
+    "getclientdetails",
+    "getallgenres",
+    "internet",
+    "facebook",
+    "instagram",
+    "youtube",
+    "telegram",
+    "twitter",
+    "ugc-other-social",
+    "itunes",
+    "google-play",
+    "third-party-app",
+    "third-party-mobile",
+    "all-platforms"
+  ],
+  "sectionTitles": {},
+  "introduction": {
+    "bannerText": "Welcome to the API Monitoring Platform documentation. This portal is organized like a reference guide — pick a topic from the sidebar or use the search bar above.",
+    "purpose": [
+      "This document outlines the primary objective of granting external users access to the APIs provided by the API Monitoring Platform. The purpose is to empower authorized external entities — such as monitoring companies, content owners, and rights holders — with the ability to programmatically retrieve comprehensive data related to intellectual-property infringements.",
+      "Through these APIs, external users can efficiently access detailed reports on various types of infringement, including but not limited to piracy-related videos, posts, or content that has been identified and captured across a range of digital platforms. This access facilitates timely monitoring, investigation, and management of infringement cases, allowing users to take further action such as implementing anti-piracy measures or initiating legal proceedings."
+    ],
+    "overview": [
+      "External users — such as monitoring companies or rights holders — can use the API to access identified pirate videos and posts captured by our platform.",
+      "This API provides a comprehensive view of infringement data, enabling companies and rights holders to retrieve detailed reports across a wide spectrum of online sources including social-media platforms, messaging applications such as Telegram, and User-Generated Content (UGC) platforms.",
+      "Through this API, companies and rights holders can manage and analyze piracy incidents end-to-end."
+    ]
+  },
+  "login": {
+    "description": "Use your shared credentials to generate a JWT token. This token must then be used to authorize every subsequent API call.",
+    "baseUrl": "https://api.markscan.co.in",
+    "loginPath": "/Login",
+    "tokenExample": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8y...",
+    "errorWrongUsername": "Invalid user credentials!",
+    "errorWrongPassword": "Invalid password! Please retry with correct credentials."
+  },
+  "support": {
+    "description": "For any technical assistance or issues with the API Monitoring Platform, please reach out to the contacts below.",
+    "contacts": [
+      {
+        "name": "Ashish Kumar Rai",
+        "email": "ashish.rai@ip-house.com"
+      }
+    ],
+    "footerNote": "Alternatively, you may reach out to your designated Project Manager."
+  },
+  "authorization": {
+    "description": "Insert the successfully-generated token to access the API. Use Bearer authentication for all subsequent API calls.",
+    "headerNote": "In Postman, select Bearer Token in the Authorization tab. Or add the header manually:",
+    "tokenExample": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
 }

@@ -24,6 +24,7 @@ export interface Endpoint {
   method: HttpMethod;
   path: string;        // "/getinfringements/YouTube"
   description: string;
+  active?: boolean;    // false = hidden from public docs (default true)
   headers?: Record<string, string>;
   requestBody?: string; // JSON example
   parameters?: Parameter[];
