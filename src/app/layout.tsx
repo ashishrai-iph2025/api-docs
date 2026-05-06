@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import { Header } from '@/components/Header';
 import { ThemeProvider, themeScript } from '@/lib/theme';
 import { MobileNavProvider } from '@/lib/mobile-nav-context';
+import { MobileDrawer } from '@/components/MobileDrawer';
 
 export const metadata: Metadata = {
   title: 'MediaScan Developer Platform',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <MobileNavProvider>
             <Header />
+            <MobileDrawer />
             {children}
           </MobileNavProvider>
         </ThemeProvider>
