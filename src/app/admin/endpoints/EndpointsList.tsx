@@ -143,28 +143,26 @@ export function EndpointsList({ initialEndpoints }: Props) {
 
               <Link
                 href={`/admin/endpoints/${ep.id}`}
-                className="flex items-center gap-3 flex-1 min-w-0"
+                className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0"
                 onClick={(e) => e.stopPropagation()}
               >
                 <span className="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-[var(--color-brand)]/10 text-[var(--color-brand)] font-mono shrink-0">
                   {ep.method}
                 </span>
-                <code className="text-[13px] text-[var(--color-fg-muted)] font-mono flex-1 min-w-0 truncate">
+                <span className="text-[13px] font-semibold text-[var(--color-fg)] shrink-0 sm:hidden truncate max-w-[120px]">{ep.title}</span>
+                <code className="text-[13px] text-[var(--color-fg-muted)] font-mono flex-1 min-w-0 truncate hidden sm:block">
                   {ep.path}
                 </code>
-                <span className="text-[14px] font-semibold text-[var(--color-fg)] shrink-0">{ep.title}</span>
+                <span className="text-[14px] font-semibold text-[var(--color-fg)] shrink-0 hidden sm:block">{ep.title}</span>
                 <span className="text-[12px] text-[var(--color-fg-muted)] truncate max-w-xs hidden xl:block">
                   {ep.description}
                 </span>
                 <div className="ml-auto flex items-center gap-2 shrink-0">
                   {!isActive && (
-                    <span className="text-[11px] px-1.5 py-0.5 rounded bg-[var(--color-border)] text-[var(--color-fg-muted)] font-medium">
+                    <span className="text-[11px] px-1.5 py-0.5 rounded bg-[var(--color-border)] text-[var(--color-fg-muted)] font-medium hidden sm:inline">
                       Hidden
                     </span>
                   )}
-                  <span className="text-[12px] text-[var(--color-brand)] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Edit
-                  </span>
                   <svg className="w-4 h-4 text-[var(--color-border-strong)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

@@ -34,7 +34,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-8">
+    <div className="py-6">
       <div className="mb-8">
         <h1 className="text-[24px] font-bold text-[var(--color-fg)]">Dashboard</h1>
         <p className="text-[14px] text-[var(--color-fg-muted)] mt-1">

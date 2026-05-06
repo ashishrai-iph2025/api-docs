@@ -51,6 +51,9 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Close mobile drawer on route change
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
+
   useEffect(() => {
     if (pathname === '/admin/login') return;
 
@@ -198,6 +201,11 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
+        {/* Backdrop */}
+        {mobileOpen && (
+          <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setMobileOpen(false)} />
+        )}
+
         <div className={clsx('fixed inset-y-0 left-0 z-50 w-64 overflow-y-auto border-r border-[var(--color-border)] bg-[var(--color-card)] transition-transform md:hidden', mobileOpen ? 'translate-x-0' : '-translate-x-full')}>
           <div className="px-4 py-4 border-b border-[var(--color-border)] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -277,8 +285,10 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <main className="flex-1 overflow-auto min-h-screen">
-          {children}
+        <main className="flex-1 min-h-screen overflow-x-hidden">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+            {children}
+          </div>
         </main>
       </div>
     </div>

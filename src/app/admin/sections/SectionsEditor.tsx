@@ -142,7 +142,7 @@ export function SectionsEditor({ initialData }: { initialData: ContentData }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 rounded-lg p-1 w-fit border border-[var(--color-border)]"
+      <div className="flex flex-wrap gap-1 mb-5 rounded-lg p-1 border border-[var(--color-border)]"
         style={{ background: 'var(--color-surface)' }}>
         {tabs.map((tab) => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}

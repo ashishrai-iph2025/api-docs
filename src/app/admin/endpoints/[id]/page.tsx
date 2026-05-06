@@ -12,7 +12,7 @@ export default function EditEndpointPage({ params }: { params: { id: string } })
   const contentData = getContentData();
 
   return (
-    <div className="p-8">
+    <div className="py-6">
       <EndpointEditor endpoint={endpoint} allContent={contentData} />
     </div>
   );

@@ -36,7 +36,7 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="py-6">
       <div className="mb-6 flex items-center gap-3">
         <Link href="/admin/dashboard" className="text-[13px] text-[var(--color-fg-muted)] hover:text-[var(--color-brand)]">
           ← Dashboard
