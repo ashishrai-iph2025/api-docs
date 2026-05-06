@@ -1,0 +1,391 @@
+{
+  "endpoints": {
+    "all-platforms": {
+      "id": "all-platforms",
+      "title": "All Platforms",
+      "path": "/GetInfringements/AllPlatforms/Test",
+      "method": "POST",
+      "description": "Single endpoint that retrieves infringements from all platforms (open web, UGC, and social-media) in one request.",
+      "requestBody": "{\n  \"startDate\": \"2026-05-06T18:53:17.521Z\",\n  \"endDate\": \"2026-05-06T18:53:17.521Z\",\n  \"assetName\": \"string\",\n  \"pageNo\": 0\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": true,
+          "description": "Filter by specific asset/title name."
+        },
+        {
+          "name": "pageNo",
+          "type": "int",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"platform\": \"Platformname\",\n  \"assetname\": \"Test\",\n  \"videourl\": \"https://x.com/smithgsdf53219/status/191399922262431/\",\n  \"profileurl\": \"https://x.com/smithjummy53219\",\n  \"channelurl\": null,\n  \"signposturl\": null,\n  \"videotitle\": \"#Squidgame Laser Tag game #player235...\",\n  \"caption\": null,\n  \"keywords\": \"Squid Game Season 3\",\n  \"infringementtype\": \"Clip Pirate Content\",\n  \"qualityofprint\": \"Pre-Release Leak\",\n  \"profilename\": null,\n  \"channelname\": null,\n  \"channelid\": null,\n  \"username\": \"smithjummy53219\",\n  \"userfullname\": \"Jummy Smith\",\n  \"viewcount\": \"26\",\n  \"likecount\": \"0\",\n  \"dislikecount\": \"0\",\n  \"favouritecount\": \"0\",\n  \"subscriber\": null,\n  \"subscribercount\": \"0\",\n  \"followerscount\": null,\n  \"commentcount\": \"0\",\n  \"retweetcount\": \"0\",\n  \"videoid\": null,\n  \"videoname\": null,\n  \"videoduration\": \"24\",\n  \"uploaddate\": \"2025-04-24T07:18:59\",\n  \"urluploaddate\": \"2025-04-24T08:36:00\",\n  \"channelcreationdate\": null,\n  \"category\": null,\n  \"season\": \"\",\n  \"episode\": \"\",\n  \"language\": \"English\",\n  \"language1\": null,\n  \"language2\": null,\n  \"language3\": null,\n  \"language4\": null,\n  \"country\": \"Global\",\n  \"removalstatus\": null,\n  \"ischannelsuspended\": null\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "youtube": {
+      "id": "youtube",
+      "title": "YouTube",
+      "path": "/getinfringements/YouTube/test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on YouTube.",
+      "requestBody": "{\n  \"startDate\": \"2026-05-06T19:14:10.738Z\",\n  \"endDate\": \"2026-05-06T19:14:10.738Z\",\n  \"assetName\": \"string\",\n  \"pageNo\": 0\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        },
+        {
+          "name": "pageNo",
+          "type": "int",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"sourceurl\": \"https://www.youtube.com/watch?v=nwkiiltmdii/\",\n  \"assetname\": \"Test\",\n  \"infringementtype\": \"Fast Movie\",\n  \"removalstatus\": \"Dead\",\n  \"ischannelsuspended\": false,\n  \"uploaddate\": \"2025-04-24T11:18:56\",\n  \"urluploaddate\": \"2025-04-24T16:47:33\",\n  \"viewcount\": \"8\",\n  \"likecount\": \"2\",\n  \"dislikecount\": 0,\n  \"subscribercount\": 812,\n  \"commentcount\": 0,\n  \"favouritecount\": 0,\n  \"videoid\": \"nwkiiltmdii\",\n  \"videoname\": \"He Gets Bullied by His Classmates Until He Decides to Teach Them A Lesson\",\n  \"videoduration\": \"500\",\n  \"qualityofprint\": \"WEB-DL\",\n  \"channelname\": \"Kdrama with Abhi 2.0\",\n  \"channelid\": \"UC0oOonm_4co1jblutsxcs5q\",\n  \"language\": \"Hindi\",\n  \"keywords\": \"Weak Hero Class 1\",\n  \"country\": \"Global\",\n  \"season\": \"S01\",\n  \"episode\": null\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "facebook": {
+      "id": "facebook",
+      "title": "Facebook",
+      "path": "/GetInfringements/Facebook/Test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on Facebook.",
+      "requestBody": "{\n  \"startDate\": \"2026-05-06T19:20:38.062Z\",\n  \"endDate\": \"2026-05-06T19:20:38.062Z\",\n  \"assetName\": \"string\",\n  \"pageNo\": 0\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        },
+        {
+          "name": "pageNo",
+          "type": "int",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"videourl\": \"https://www.facebook.com/reel/1354768799007411/\",\n  \"assetname\": \"Test\",\n  \"profileurl\": \"https://www.facebook.com/profile.php?id=61575260241261\",\n  \"infringementtype\": \"Clip Pirate Content\",\n  \"videotitle\": null,\n  \"profilename\": \"K-Derama\",\n  \"qualityofprint\": \"WEB-DL\",\n  \"views\": \"0\",\n  \"like_count\": \"0\",\n  \"comment_count\": \"0\",\n  \"videolength\": \"90.116\",\n  \"signposturls\": null,\n  \"publisheddate\": \"2025-04-20T17:31:15\",\n  \"urluploaddate\": \"2025-04-21T11:20:08\",\n  \"keywords\": \"Weak Hero Class 1\",\n  \"audiolanguage\": \"Hindi\",\n  \"season\": \"S01\",\n  \"episode\": \"\",\n  \"country\": \"Global\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "instagram": {
+      "id": "instagram",
+      "title": "Instagram",
+      "path": "/GetInfringements/Instagram/Test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on Instagram.",
+      "requestBody": "{\n  \"startdate\": \"2025-04-24T19:53:32.616Z\",\n  \"enddate\": \"2025-04-24T19:53:32.616Z\",\n  \"assetname\": \"string\"\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"videourl\": \"https://www.instagram.com/anny_editz_01/reel/diqdbbosh_m/\",\n  \"assetname\": \"Test\",\n  \"profileurl\": \"https://www.instagram.com/anny_editz_01/\",\n  \"viewcount\": \"519\",\n  \"videoduration\": \"66.037\",\n  \"likecount\": \"2\",\n  \"followerscount\": null,\n  \"commentscount\": \"0\",\n  \"caption\": null,\n  \"postdate\": \"2025-04-20T11:10:36\",\n  \"urluploaddate\": \"2025-04-20T13:16:27\",\n  \"username\": \"anny_editz_01\",\n  \"userfullname\": \"anny\",\n  \"signposturls\": null,\n  \"country\": \"Global\",\n  \"infringementtype\": \"Clip Pirate Content\",\n  \"qualityofprint\": \"WEB-DL\",\n  \"audiolanguage\": \"Hindi\",\n  \"keywords\": \"Dragon parts\",\n  \"season\": null,\n  \"episode\": null\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "telegram": {
+      "id": "telegram",
+      "title": "Telegram",
+      "path": "/GetInfringements/Telegram/Test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on Telegram channels.",
+      "requestBody": "{\n  \"startdate\": \"2025-04-24T19:53:32.616Z\",\n  \"enddate\": \"2025-04-24T19:53:32.616Z\",\n  \"assetname\": \"string\"\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"assetname\": \"Test\",\n  \"sourceurl\": \"https://t.me/c/2162551207/9\",\n  \"channelurl\": \"https://t.me/c/2162551207\",\n  \"channelname\": \"Frozen Hot Boys (2025)\",\n  \"signposturls\": null,\n  \"subscribers\": \"64\",\n  \"views\": \"40\",\n  \"duration\": null,\n  \"language1\": \"Thai\",\n  \"language2\": null,\n  \"language3\": null,\n  \"language4\": null,\n  \"quality\": \"WEB-DL\",\n  \"season\": null,\n  \"episode\": null,\n  \"category\": null,\n  \"channelcreationdate\": \"2025-04-23T00:00:00\",\n  \"postuploaddatetime\": null,\n  \"urluploaddate\": \"2025-04-24T12:53:47\",\n  \"infringementtype\": \"Full Pirate Content\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "twitter": {
+      "id": "twitter",
+      "title": "Twitter",
+      "path": "/GetInfringements/Twitter/Test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on Twitter / X.",
+      "requestBody": "{\n  \"startdate\": \"2025-04-24T19:53:32.616Z\",\n  \"enddate\": \"2025-04-24T19:53:32.616Z\",\n  \"assetname\": \"string\"\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"assetname\": \"Test\",\n  \"sourceurllink\": \"https://x.com/bigbicblack/status/1915461750767472747/\",\n  \"profileurl\": \"https://x.com/bigbicblack\",\n  \"viewcount\": \"1236\",\n  \"videoduration\": \"0\",\n  \"retweetcount\": \"2\",\n  \"likecount\": \"50\",\n  \"publishedon\": \"2025-04-24T23:14:03\",\n  \"urluploaddate\": \"2025-04-25T01:41:55\",\n  \"username\": \"bigbicblack\",\n  \"userfullname\": \"Stranger\",\n  \"title\": \"#strangerthings5 https://t.co/svirhj6dyt\",\n  \"signposturls\": null,\n  \"country\": \"Global\",\n  \"infringementtype\": \"Image\",\n  \"qualityofprint\": \"Pre-Release Leak\",\n  \"audiolanguage\": \"English\",\n  \"keywords\": \"Stranger Things Leak\",\n  \"season\": \"\",\n  \"episode\": \"\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "ugc-other-social": {
+      "id": "ugc-other-social",
+      "title": "UGC & Other Social Media",
+      "path": "/GetInfringements/UGCPlatform/Test",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on UGC platforms and other social-media sites.",
+      "requestBody": "{\n  \"startDate\": \"2026-05-06T19:19:56.910Z\",\n  \"endDate\": \"2026-05-06T19:19:56.910Z\",\n  \"assetName\": \"string\",\n  \"platform\": \"string\",\n  \"pageNo\": 0\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        },
+        {
+          "name": "platform",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "pageNo",
+          "type": "int",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"assetname\": \"Test\",\n  \"videourl\": \"https://vk.ru/video890230561_456270399\",\n  \"videotitle\": \"Battle.Camp.S01E10.egydead.com_3\",\n  \"views\": \"1\",\n  \"duration\": \"3594\",\n  \"infringementtype\": \"Full Pirate Content\",\n  \"likes\": null,\n  \"commentcount\": null,\n  \"postuploaddate\": \"2025-04-24T00:00:00\",\n  \"urluploaddate\": \"2025-04-24T19:33:04\",\n  \"season\": \"S01\",\n  \"episode\": \"E10\",\n  \"signposturl\": null,\n  \"channelorprofileurl\": \"https://vk.ru/video/@id890230561\",\n  \"channelorprofilename\": \"Momo Dany\",\n  \"subscriber\": \"326\",\n  \"qualityofprint\": \"WEB-DL\",\n  \"language\": \"English\",\n  \"country\": \"Thailand\",\n  \"keyword\": \"Battle Camp\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "itunes": {
+      "id": "itunes",
+      "title": "iTunes API URLs",
+      "path": "/GetInfringements/ItunesApiUrls",
+      "method": "POST",
+      "description": "Retrieve infringement data identified on the Apple App Store / iTunes.",
+      "requestBody": "{\n  \"startdate\": \"2025-04-24T19:53:32.616Z\",\n  \"enddate\": \"2025-04-24T19:53:32.616Z\",\n  \"assetname\": \"string\"\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"sourceURL\": \"https://apps.apple.com/us/app/faqgpt/id6739639131\",\n  \"assetName\": \"Test\",\n  \"artistId\": \"1786413771\",\n  \"infringementType\": \"Full Pirate Content\",\n  \"title\": \"FAQGPT\",\n  \"qualityOfPrint\": null,\n  \"appName\": \"FAQGPT\",\n  \"appId\": \"6739639131\",\n  \"rateCount\": \"6\",\n  \"starsCount\": \"4.16667\",\n  \"categoryName\": \"Productivity\",\n  \"devInfo\": \"Painda Gul\",\n  \"compatibilityOS\": null,\n  \"inApp\": null,\n  \"currency\": \"USD\",\n  \"releaseDate\": \"12/19/2024 13:30:00\",\n  \"trackContentRating\": null,\n  \"price\": \"0.00\",\n  \"wrapperType\": null,\n  \"uploadDate\": null,\n  \"keywords\": \"Movie App\",\n  \"signPostURLs\": null,\n  \"urlUploadDate\": \"2025-02-24T19:55:24\",\n  \"country\": \"Global\",\n  \"removalStatus\": null,\n  \"language\": \"Hindi\",\n  \"id\": \"350A0A5A-6907-4AC0-BDF2-EBB63353A4C3\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    },
+    "internet": {
+      "id": "internet",
+      "title": "Internet",
+      "path": "/GetInfringements/Internet/Test",
+      "method": "POST",
+      "description": "Retrieve data from Internet.",
+      "requestBody": "{\n  \"startDate\": \"2026-05-06T19:32:25.941Z\",\n  \"endDate\": \"2026-05-06T19:32:25.941Z\",\n  \"assetName\": \"string\",\n  \"pageNo\": 0\n}",
+      "parameters": [
+        {
+          "name": "startdate",
+          "type": "datetime",
+          "required": true,
+          "description": "Start date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "enddate",
+          "type": "datetime",
+          "required": false,
+          "description": "End date for infringement search (ISO 8601 format)."
+        },
+        {
+          "name": "assetname",
+          "type": "string",
+          "required": false,
+          "description": "Filter by specific asset/title name."
+        },
+        {
+          "name": "pageNo",
+          "type": "int",
+          "required": false,
+          "description": "page number"
+        }
+      ],
+      "responses": [
+        {
+          "status": 200,
+          "label": "Success",
+          "body": "{\n  \"message\": \"Success\"\n}"
+        }
+      ],
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer {{access_token}}"
+      }
+    }
+  }
+}

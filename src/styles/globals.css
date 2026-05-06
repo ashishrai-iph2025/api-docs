@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── Light theme ─────────────────────────────────────────────────────────── */
+:root {
+  --color-bg:              #ffffff;
+  --color-fg:              #1c1e21;
+  --color-fg-muted:        #606770;
+  --color-border:          #dadde1;
+  --color-border-strong:   #c4c8cd;
+  --color-surface:         #f5f6f7;
+  --color-card:            #ffffff;
+  --color-brand:           #1877f2;
+  --color-brand-hover:     #166fe5;
+  --color-brand-subtle:    rgba(24,119,242,0.08);
+  --color-success:         #22c55e;
+  --color-warning:         #f59e0b;
+  --color-error:           #ef4444;
+  --color-link:            #1877f2;
+  --color-code-bg:         #f6f8fa;
+  --color-input-bg:        #ffffff;
+
+  /* method badge colors */
+  --color-method-get:      #16a34a;
+  --color-method-post:     #2563eb;
+  --color-method-put:      #d97706;
+  --color-method-delete:   #dc2626;
+  --color-method-patch:    #7c3aed;
+}
+
+/* ── Dark theme ──────────────────────────────────────────────────────────── */
+.dark {
+  --color-bg:              #0d1117;
+  --color-fg:              #e6edf3;
+  --color-fg-muted:        #8b949e;
+  --color-border:          #30363d;
+  --color-border-strong:   #484f58;
+  --color-surface:         #161b22;
+  --color-card:            #161b22;
+  --color-brand:           #58a6ff;
+  --color-brand-hover:     #79b8ff;
+  --color-brand-subtle:    rgba(88,166,255,0.10);
+  --color-success:         #3fb950;
+  --color-warning:         #d29922;
+  --color-error:           #f85149;
+  --color-link:            #58a6ff;
+  --color-code-bg:         #1c2128;
+  --color-input-bg:        #0d1117;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+  font-feature-settings: 'liga' 0;
+}
+
+/* ── Prism — Light ───────────────────────────────────────────────────────── */
+pre[class*="language-"],
+code[class*="language-"] {
+  background: var(--color-code-bg) !important;
+  color: #24292f !important;
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  text-shadow: none !important;
+}
+
+pre[class*="language-"] {
+  padding: 16px 20px !important;
+  overflow-x: auto;
+}
+
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6e7781; }
+.token.punctuation                                           { color: #24292f; }
+.token.property, .token.tag, .token.boolean,
+.token.number, .token.constant, .token.symbol               { color: #0550ae; }
+.token.selector, .token.attr-name, .token.string,
+.token.char, .token.builtin                                  { color: #0a3069; }
+.token.operator, .token.entity, .token.url,
+.language-css .token.string, .style .token.string           { color: #0550ae; }
+.token.atrule, .token.attr-value, .token.keyword             { color: #cf222e; }
+.token.function, .token.class-name                           { color: #8250df; }
+.token.regex, .token.important, .token.variable              { color: #953800; }
+
+/* ── Prism — Dark overrides ──────────────────────────────────────────────── */
+.dark pre[class*="language-"],
+.dark code[class*="language-"] {
+  color: #adbac7 !important;
+}
+
+.dark .token.comment, .dark .token.prolog,
+.dark .token.doctype, .dark .token.cdata    { color: #768390; }
+.dark .token.punctuation                    { color: #adbac7; }
+.dark .token.property, .dark .token.tag,
+.dark .token.boolean, .dark .token.number,
+.dark .token.constant, .dark .token.symbol  { color: #6cb6ff; }
+.dark .token.selector, .dark .token.attr-name,
+.dark .token.string, .dark .token.char,
+.dark .token.builtin                         { color: #96d0ff; }
+.dark .token.operator, .dark .token.entity,
+.dark .token.url                             { color: #6cb6ff; }
+.dark .token.atrule, .dark .token.attr-value,
+.dark .token.keyword                         { color: #f47067; }
+.dark .token.function, .dark .token.class-name { color: #dcbdfb; }
+.dark .token.regex, .dark .token.important,
+.dark .token.variable                        { color: #f69d50; }
+
+/* ── Scrollbars ───────────────────────────────────────────────────────────── */
+pre::-webkit-scrollbar               { height: 8px; }
+pre::-webkit-scrollbar-track         { background: transparent; }
+pre::-webkit-scrollbar-thumb         { background: var(--color-border-strong); border-radius: 4px; }
+
+.sidebar-scroll::-webkit-scrollbar         { width: 6px; }
+.sidebar-scroll::-webkit-scrollbar-track   { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb   { background: transparent; }
+.sidebar-scroll:hover::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+.anchor-target { scroll-margin-top: 80px; }
+
+/* Theme transition — smooth except for images */
+*, *::before, *::after {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+img, svg, [class*="language-"], pre, code { transition: none !important; }
