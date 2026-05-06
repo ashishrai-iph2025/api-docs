@@ -57,7 +57,7 @@ export function PlatformOverviewContent({ endpoints }: Props) {
             <Link
               key={e.id}
               href={`/docs/endpoints/${e.id}`}
-              className="flex flex-wrap items-center gap-3 rounded-md border border-[var(--color-border)] bg-white px-4 py-3 hover:border-[var(--color-brand)] hover:bg-[var(--color-surface)] transition-colors"
+              className="flex flex-wrap items-center gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] px-4 py-3 hover:border-[var(--color-brand)] hover:bg-[var(--color-surface)] transition-colors"
             >
               <MethodBadge method={e.method} />
               <code className="font-mono text-[13px] font-medium text-[var(--color-fg)]">

@@ -91,35 +91,35 @@ export default function HomePage() {
   const endpoints = getEndpoints();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden border-b border-[#dadde1]">
-        {/* Background grid pattern */}
+      <section className="relative overflow-hidden border-b border-[var(--color-border)]">
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: `linear-gradient(#1877f2 1px, transparent 1px), linear-gradient(90deg, #1877f2 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(var(--color-brand) 1px, transparent 1px), linear-gradient(90deg, var(--color-brand) 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
           }}
         />
-        {/* Gradient glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#1877f2] opacity-[0.06] rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full blur-[120px] opacity-[0.06]"
+          style={{ background: 'var(--color-brand)' }} />
 
         <div className="relative mx-auto max-w-6xl px-6 py-24 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#dadde1] bg-[#f5f6f7] px-4 py-1.5 text-[12.5px] font-medium text-[#606770] mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-1.5 text-[12.5px] font-medium mb-8"
+            style={{ background: 'var(--color-surface)', color: 'var(--color-fg-muted)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)] animate-pulse" />
             API v1.0 · REST · Bearer Auth
           </div>
 
-          <h1 className="text-[52px] leading-[1.1] font-bold tracking-tight text-[#1c1e21] mb-5">
+          <h1 className="text-[52px] leading-[1.1] font-bold tracking-tight mb-5" style={{ color: 'var(--color-fg)' }}>
             MediaScan
-            <span className="text-[#1877f2]"> Developer</span>
+            <span style={{ color: 'var(--color-brand)' }}> Developer</span>
             <br />
-            <span className="text-[#606770]">API Platform</span>
+            <span style={{ color: 'var(--color-fg-muted)' }}>API Platform</span>
           </h1>
 
-          <p className="max-w-2xl mx-auto text-[17px] text-[#606770] leading-relaxed mb-10">
+          <p className="max-w-2xl mx-auto text-[17px] leading-relaxed mb-10" style={{ color: 'var(--color-fg-muted)' }}>
             Programmatic access to IP infringement intelligence across social media, video platforms,
             app stores, UGC sites, and the open web. Built for rights holders and anti-piracy teams.
           </p>
@@ -127,7 +127,9 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/docs/introduction"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#1877f2] hover:bg-[#166fe5] text-white text-[15px] font-semibold rounded-lg transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-3 text-white text-[15px] font-semibold rounded-lg transition-colors shadow-sm"
+              style={{ background: 'var(--color-brand)' }}
+              onMouseEnter={undefined}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -136,7 +138,8 @@ export default function HomePage() {
             </Link>
             <Link
               href="/docs/endpoints"
-              className="inline-flex items-center gap-2 px-6 py-3 border border-[#dadde1] bg-white hover:bg-[#f5f6f7] text-[#1c1e21] text-[15px] font-semibold rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-[var(--color-border)] text-[15px] font-semibold rounded-lg transition-colors"
+              style={{ background: 'var(--color-card)', color: 'var(--color-fg)' }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -146,15 +149,16 @@ export default function HomePage() {
           </div>
 
           {/* Stats row */}
-          <div className="mt-16 grid grid-cols-3 md:grid-cols-3 gap-px bg-[#dadde1] border border-[#dadde1] rounded-xl overflow-hidden max-w-lg mx-auto">
+          <div className="mt-16 grid grid-cols-3 gap-px border border-[var(--color-border)] rounded-xl overflow-hidden max-w-lg mx-auto"
+            style={{ background: 'var(--color-border)' }}>
             {[
               { value: `${endpoints.length}`, label: 'Endpoints' },
               { value: '11+', label: 'Platforms' },
               { value: '40+', label: 'Response Fields' },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white px-6 py-5">
-                <div className="text-[26px] font-bold text-[#1877f2]">{stat.value}</div>
-                <div className="text-[12px] text-[#606770] font-medium mt-0.5">{stat.label}</div>
+              <div key={stat.label} className="px-6 py-5" style={{ background: 'var(--color-card)' }}>
+                <div className="text-[26px] font-bold" style={{ color: 'var(--color-brand)' }}>{stat.value}</div>
+                <div className="text-[12px] font-medium mt-0.5" style={{ color: 'var(--color-fg-muted)' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -162,11 +166,11 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section className="py-20 px-6 border-b border-[#dadde1]">
+      <section className="py-20 px-6 border-b border-[var(--color-border)]">
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-[30px] font-bold text-[#1c1e21]">Everything you need to monitor IP</h2>
-            <p className="text-[15px] text-[#606770] mt-2">
+            <h2 className="text-[30px] font-bold" style={{ color: 'var(--color-fg)' }}>Everything you need to monitor IP</h2>
+            <p className="text-[15px] mt-2" style={{ color: 'var(--color-fg-muted)' }}>
               A comprehensive API designed for anti-piracy workflows from day one.
             </p>
           </div>
@@ -174,16 +178,17 @@ export default function HomePage() {
             {features.map((f) => (
               <div
                 key={f.title}
-                className="group relative p-6 rounded-xl border border-[#dadde1] bg-white hover:border-[#1877f2]/40 hover:shadow-sm transition-all"
+                className="group relative p-6 rounded-xl border border-[var(--color-border)] hover:shadow-sm transition-all"
+                style={{ background: 'var(--color-card)' }}
               >
                 <div
                   className="inline-flex items-center justify-center w-10 h-10 rounded-lg mb-4"
-                  style={{ backgroundColor: `${f.color}12`, color: f.color }}
+                  style={{ backgroundColor: `${f.color}20`, color: f.color }}
                 >
                   {f.icon}
                 </div>
-                <h3 className="text-[15px] font-bold text-[#1c1e21] mb-2">{f.title}</h3>
-                <p className="text-[13.5px] text-[#606770] leading-relaxed">{f.description}</p>
+                <h3 className="text-[15px] font-bold mb-2" style={{ color: 'var(--color-fg)' }}>{f.title}</h3>
+                <p className="text-[13.5px] leading-relaxed" style={{ color: 'var(--color-fg-muted)' }}>{f.description}</p>
               </div>
             ))}
           </div>
@@ -191,11 +196,11 @@ export default function HomePage() {
       </section>
 
       {/* ── PLATFORMS ── */}
-      <section className="py-16 px-6 bg-[#f5f6f7] border-b border-[#dadde1]">
+      <section className="py-16 px-6 border-b border-[var(--color-border)]" style={{ background: 'var(--color-surface)' }}>
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-10">
-            <h2 className="text-[26px] font-bold text-[#1c1e21]">Platforms Covered</h2>
-            <p className="text-[14px] text-[#606770] mt-1.5">
+            <h2 className="text-[26px] font-bold" style={{ color: 'var(--color-fg)' }}>Platforms Covered</h2>
+            <p className="text-[14px] mt-1.5" style={{ color: 'var(--color-fg-muted)' }}>
               Dedicated endpoints for each platform with platform-specific response schemas.
             </p>
           </div>
@@ -203,7 +208,8 @@ export default function HomePage() {
             {platforms.map((p) => (
               <div
                 key={p.name}
-                className="flex items-center gap-2.5 px-4 py-2.5 bg-white rounded-full border border-[#dadde1] hover:border-[#c4c8cd] transition-colors"
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-[var(--color-border)] hover:border-[var(--color-border-strong)] transition-colors"
+                style={{ background: 'var(--color-card)' }}
               >
                 <div
                   className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold shrink-0"
@@ -211,7 +217,7 @@ export default function HomePage() {
                 >
                   {p.icon}
                 </div>
-                <span className="text-[13px] font-medium text-[#1c1e21]">{p.name}</span>
+                <span className="text-[13px] font-medium" style={{ color: 'var(--color-fg)' }}>{p.name}</span>
               </div>
             ))}
           </div>
@@ -219,39 +225,40 @@ export default function HomePage() {
       </section>
 
       {/* ── QUICK START ── */}
-      <section className="py-20 px-6 border-b border-[#dadde1]">
+      <section className="py-20 px-6 border-b border-[var(--color-border)]">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Steps */}
             <div>
-              <div className="text-[12px] font-bold uppercase tracking-widest text-[#1877f2] mb-3">Quick Start</div>
-              <h2 className="text-[28px] font-bold text-[#1c1e21] mb-2">Up and running in 4 steps</h2>
-              <p className="text-[14px] text-[#606770] mb-8">
+              <div className="text-[12px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--color-brand)' }}>Quick Start</div>
+              <h2 className="text-[28px] font-bold mb-2" style={{ color: 'var(--color-fg)' }}>Up and running in 4 steps</h2>
+              <p className="text-[14px] mb-8" style={{ color: 'var(--color-fg-muted)' }}>
                 Integrate the MediaScan API in minutes with your preferred HTTP client.
               </p>
               <div className="space-y-5">
                 {quickStartSteps.map((s) => (
                   <div key={s.step} className="flex gap-4">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-[#1877f2]/10 text-[#1877f2] text-[12px] font-bold flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full text-[12px] font-bold flex items-center justify-center"
+                      style={{ background: 'var(--color-brand-subtle)', color: 'var(--color-brand)' }}>
                       {s.step}
                     </div>
                     <div>
-                      <div className="text-[14px] font-bold text-[#1c1e21]">{s.title}</div>
-                      <div className="text-[13px] text-[#606770] mt-0.5">{s.desc}</div>
+                      <div className="text-[14px] font-bold" style={{ color: 'var(--color-fg)' }}>{s.title}</div>
+                      <div className="text-[13px] mt-0.5" style={{ color: 'var(--color-fg-muted)' }}>{s.desc}</div>
                     </div>
                   </div>
                 ))}
               </div>
               <Link
                 href="/docs/login"
-                className="inline-flex items-center gap-2 mt-8 text-[14px] font-semibold text-[#1877f2] hover:underline"
+                className="inline-flex items-center gap-2 mt-8 text-[14px] font-semibold hover:underline"
+                style={{ color: 'var(--color-brand)' }}
               >
                 View full authentication guide →
               </Link>
             </div>
 
-            {/* Code preview */}
-            <div className="rounded-xl overflow-hidden border border-[#dadde1] shadow-sm">
+            {/* Code preview — always dark, intentional */}
+            <div className="rounded-xl overflow-hidden border border-[var(--color-border)] shadow-sm">
               <div className="flex items-center gap-2 px-4 py-3 bg-[#1c1e21] border-b border-white/10">
                 <div className="w-3 h-3 rounded-full bg-[#ef4444]/70" />
                 <div className="w-3 h-3 rounded-full bg-[#f59e0b]/70" />
@@ -297,36 +304,39 @@ export default function HomePage() {
       </section>
 
       {/* ── ENDPOINTS PREVIEW ── */}
-      <section className="py-20 px-6 bg-[#f5f6f7] border-b border-[#dadde1]">
+      <section className="py-20 px-6 border-b border-[var(--color-border)]" style={{ background: 'var(--color-surface)' }}>
         <div className="mx-auto max-w-6xl">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-[26px] font-bold text-[#1c1e21]">API Endpoints</h2>
-              <p className="text-[14px] text-[#606770] mt-1">
+              <h2 className="text-[26px] font-bold" style={{ color: 'var(--color-fg)' }}>API Endpoints</h2>
+              <p className="text-[14px] mt-1" style={{ color: 'var(--color-fg-muted)' }}>
                 {endpoints.length} endpoints, all returning structured JSON.
               </p>
             </div>
-            <Link href="/docs/endpoints" className="text-[13.5px] font-semibold text-[#1877f2] hover:underline">
+            <Link href="/docs/endpoints" className="text-[13.5px] font-semibold hover:underline" style={{ color: 'var(--color-brand)' }}>
               View full reference →
             </Link>
           </div>
-          <div className="bg-white rounded-xl border border-[#dadde1] overflow-hidden divide-y divide-[#dadde1]">
+          <div className="rounded-xl border border-[var(--color-border)] overflow-hidden divide-y divide-[var(--color-border)]"
+            style={{ background: 'var(--color-card)' }}>
             {endpoints.slice(0, 6).map((ep) => (
               <Link
                 key={ep.id}
                 href={`/docs/endpoints/${ep.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#f5f6f7] transition-colors group"
+                className="flex items-center gap-4 px-5 py-3.5 transition-colors group hover:bg-[var(--color-surface)]"
               >
-                <span className="inline-block shrink-0 px-2 py-0.5 rounded text-[11px] font-bold bg-[#2563eb]/10 text-[#2563eb] font-mono">
+                <span className="inline-block shrink-0 px-2 py-0.5 rounded text-[11px] font-bold font-mono"
+                  style={{ background: 'var(--color-brand-subtle)', color: 'var(--color-brand)' }}>
                   POST
                 </span>
-                <code className="text-[13px] text-[#606770] font-mono flex-1 min-w-0 truncate">
+                <code className="text-[13px] font-mono flex-1 min-w-0 truncate" style={{ color: 'var(--color-fg-muted)' }}>
                   {ep.path}
                 </code>
-                <span className="text-[13.5px] font-medium text-[#1c1e21] shrink-0 hidden sm:block">
+                <span className="text-[13.5px] font-medium shrink-0 hidden sm:block" style={{ color: 'var(--color-fg)' }}>
                   {ep.title}
                 </span>
-                <svg className="w-4 h-4 text-[#dadde1] group-hover:text-[#1877f2] ml-auto shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 ml-auto shrink-0 transition-colors" style={{ color: 'var(--color-border-strong)' }}
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -334,7 +344,8 @@ export default function HomePage() {
             {endpoints.length > 6 && (
               <Link
                 href="/docs/endpoints"
-                className="flex items-center justify-center gap-2 px-5 py-3.5 text-[13px] font-semibold text-[#1877f2] hover:bg-[#f5f6f7] transition-colors"
+                className="flex items-center justify-center gap-2 px-5 py-3.5 text-[13px] font-semibold transition-colors hover:bg-[var(--color-surface)]"
+                style={{ color: 'var(--color-brand)' }}
               >
                 +{endpoints.length - 6} more endpoints →
               </Link>
@@ -344,28 +355,31 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA BANNER ── */}
-      <section className="py-16 px-6 border-b border-[#dadde1]">
+      <section className="py-16 px-6 border-b border-[var(--color-border)]">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[26px] font-bold text-[#1c1e21] mb-3">Ready to start building?</h2>
-          <p className="text-[14px] text-[#606770] mb-8">
+          <h2 className="text-[26px] font-bold mb-3" style={{ color: 'var(--color-fg)' }}>Ready to start building?</h2>
+          <p className="text-[14px] mb-8" style={{ color: 'var(--color-fg-muted)' }}>
             Review the authentication flow, explore endpoints, and check the JSON response schema.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/docs/introduction"
-              className="px-5 py-2.5 bg-[#1877f2] hover:bg-[#166fe5] text-white text-[14px] font-semibold rounded-lg transition-colors"
+              className="px-5 py-2.5 text-white text-[14px] font-semibold rounded-lg transition-colors"
+              style={{ background: 'var(--color-brand)' }}
             >
               Get Started
             </Link>
             <Link
               href="/docs/json-dataset"
-              className="px-5 py-2.5 border border-[#dadde1] bg-white hover:bg-[#f5f6f7] text-[#1c1e21] text-[14px] font-semibold rounded-lg transition-colors"
+              className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)]"
+              style={{ background: 'var(--color-card)', color: 'var(--color-fg)' }}
             >
               JSON Reference
             </Link>
             <Link
               href="/docs/support"
-              className="px-5 py-2.5 border border-[#dadde1] bg-white hover:bg-[#f5f6f7] text-[#1c1e21] text-[14px] font-semibold rounded-lg transition-colors"
+              className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)]"
+              style={{ background: 'var(--color-card)', color: 'var(--color-fg)' }}
             >
               Contact Support
             </Link>
@@ -377,20 +391,22 @@ export default function HomePage() {
       <footer className="py-8 px-6">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#1877f2] flex items-center justify-center text-white text-[11px] font-bold">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[11px] font-bold"
+              style={{ background: 'var(--color-brand)' }}>
               MS
             </div>
-            <span className="text-[13px] font-semibold text-[#1c1e21]">MediaScan</span>
-            <span className="text-[12px] text-[#606770]">Developer Platform</span>
+            <span className="text-[13px] font-semibold" style={{ color: 'var(--color-fg)' }}>MediaScan</span>
+            <span className="text-[12px]" style={{ color: 'var(--color-fg-muted)' }}>Developer Platform</span>
           </div>
-          <div className="flex items-center gap-6 text-[13px] text-[#606770]">
-            <Link href="/docs/introduction" className="hover:text-[#1877f2] transition-colors">Docs</Link>
-            <Link href="/docs/endpoints" className="hover:text-[#1877f2] transition-colors">Endpoints</Link>
-            <Link href="/docs/support" className="hover:text-[#1877f2] transition-colors">Support</Link>
-            <span className="text-[#dadde1]">|</span>
+          <div className="flex items-center gap-6 text-[13px]" style={{ color: 'var(--color-fg-muted)' }}>
+            <Link href="/docs/introduction" className="hover:text-[var(--color-brand)] transition-colors">Docs</Link>
+            <Link href="/docs/endpoints" className="hover:text-[var(--color-brand)] transition-colors">Endpoints</Link>
+            <Link href="/docs/support" className="hover:text-[var(--color-brand)] transition-colors">Support</Link>
+            <span style={{ color: 'var(--color-border-strong)' }}>|</span>
             <Link
               href="/admin/login"
-              className="text-[#c4c8cd] hover:text-[#606770] transition-colors text-[12px]"
+              className="hover:text-[var(--color-fg-muted)] transition-colors text-[12px]"
+              style={{ color: 'var(--color-border-strong)' }}
             >
               Admin
             </Link>
