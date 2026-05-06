@@ -286,7 +286,7 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
         </div>
 
         <main className="flex-1 min-h-screen overflow-x-hidden">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-2">
             {children}
           </div>
         </main>
