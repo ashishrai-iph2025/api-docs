@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAdminPassword, setAdminPassword } from '@/lib/admin-config';
-import { makeSessionToken } from '@/app/api/admin/auth/route';
+import { getAdminPassword, setAdminPassword, makeSessionToken } from '@/lib/admin-config';
 
 export async function POST(req: NextRequest) {
   const { currentPassword, newPassword } = await req.json();

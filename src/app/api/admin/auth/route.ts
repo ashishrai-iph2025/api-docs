@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'node:crypto';
-import { getAdminPassword } from '@/lib/admin-config';
-
-// ── Session token ─────────────────────────────────────────────────────────────
-// Derived from ADMIN_SECRET only — never from the password.
-// This means middleware can validate it without knowing the password.
-export function makeSessionToken(): string {
-  const secret = process.env.ADMIN_SECRET || 'api-docs-secret';
-  return crypto.createHmac('sha256', secret).update('admin:session:v1').digest('hex');
-}
+import { getAdminPassword, makeSessionToken } from '@/lib/admin-config';
 
 // ── Rate-limit store (in-memory, per IP) ─────────────────────────────────────
 interface Attempt { count: number; lockedUntil: number; }
