@@ -8,7 +8,7 @@ import type { ContentData } from '@/lib/content-store';
 
 interface Props {
   endpoint: Endpoint;
-  allContent: ContentData;
+  allContent: ContentData; // kept for compat, no longer sent on save
 }
 
 const inputCls = 'w-full px-3 py-2 text-[14px] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]/30 focus:border-[var(--color-brand)] transition';
@@ -42,35 +42,33 @@ export function EndpointEditor({ endpoint, allContent }: Props) {
 
   async function handleSave() {
     setSaving(true); setError(''); setSaved(false);
-    const payload: ContentData = {
-      ...allContent,
-      endpoints: {
-        ...(allContent.endpoints || {}),
-        [endpoint.id]: {
-          id: endpoint.id,
-          title, path, method, description,
-          requestBody: requestBody || undefined,
-          parameters,
-          responses: [
-            { status: endpoint.responses[0]?.status || 200, label: endpoint.responses[0]?.label || 'Success', body: responseBody },
-            ...endpoint.responses.slice(1),
-          ],
-          headers: endpoint.headers,
-        },
-      },
+    // Only send the fields for this one endpoint — avoids large payloads
+    const payload = {
+      id: endpoint.id,
+      title, path, method, description,
+      requestBody: requestBody || undefined,
+      parameters,
+      responses: [
+        { status: endpoint.responses[0]?.status || 200, label: endpoint.responses[0]?.label || 'Success', body: responseBody },
+        ...endpoint.responses.slice(1),
+      ],
+      headers: endpoint.headers,
+      active: endpoint.active,
     };
     try {
-      const res = await fetch('/api/admin/content', {
+      const res = await fetch(`/api/admin/endpoints/${endpoint.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         credentials: 'same-origin',
       });
       setSaving(false);
-      if (res.ok) { setSaved(true); router.refresh(); setTimeout(() => setSaved(false), 3000); }
-      else {
-        const errData = await res.json().catch(() => ({ error: 'Unknown error' }));
-        setError(`Failed: ${errData.error || res.statusText}`);
+      if (res.ok) {
+        setSaved(true); router.refresh(); setTimeout(() => setSaved(false), 3000);
+      } else {
+        let errMsg = `HTTP ${res.status}`;
+        try { const d = await res.json(); errMsg = d.error || res.statusText; } catch { errMsg = res.statusText || errMsg; }
+        setError(`Failed: ${errMsg}`);
       }
     } catch (err) {
       setSaving(false);
