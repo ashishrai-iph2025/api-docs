@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { Header } from '@/components/Header';
 import { ThemeProvider, themeScript } from '@/lib/theme';
+import { MobileNavProvider } from '@/lib/mobile-nav-context';
 
 export const metadata: Metadata = {
   title: 'MediaScan Developer Platform',
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
-          <Header />
-          {children}
+          <MobileNavProvider>
+            <Header />
+            {children}
+          </MobileNavProvider>
         </ThemeProvider>
       </body>
     </html>

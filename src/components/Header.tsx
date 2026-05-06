@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Search } from 'lucide-react';
 import clsx from 'clsx';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useMobileNav } from '@/lib/mobile-nav-context';
 
 const navLinks = [
   { href: '/docs/introduction', label: 'Docs' },
@@ -15,6 +16,7 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const { setOpen } = useMobileNav();
 
   if (pathname.startsWith('/admin')) {
     return null;
@@ -61,6 +63,16 @@ export function Header() {
 
         {/* Right side */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={() => setOpen(true)}
+            className="lg:hidden flex items-center justify-center w-8 h-8 rounded-md border border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors"
+            aria-label="Open navigation"
+          >
+            <svg className="w-4 h-4 text-[var(--color-fg)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           {/* Search */}
           <div className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[var(--color-fg-muted)]" />
