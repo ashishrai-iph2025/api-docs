@@ -4,12 +4,14 @@ const COMMON_PARAMS = [
   { name: 'startdate', type: 'datetime', required: true, description: 'Start date for infringement search (ISO 8601 format).' },
   { name: 'enddate', type: 'datetime', required: false, description: 'End date for infringement search (ISO 8601 format).' },
   { name: 'assetname', type: 'string', required: false, description: 'Filter by specific asset/title name.' },
+  { name: 'page', type: 'integer', required: false, description: 'Page number for paginated results (default: 1). Each page returns up to 1,000 records.' },
 ];
 
 const COMMON_BODY = `{
   "startdate": "2025-04-24T19:53:32.616Z",
   "enddate": "2025-04-24T19:53:32.616Z",
-  "assetname": "string"
+  "assetname": "string",
+  "page": 1
 }`;
 
 const COMMON_HEADERS = {

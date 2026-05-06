@@ -36,6 +36,7 @@ export function tocForCustomContent(
         top,
         { id: 'all-platforms', title: '4.1 All Platforms' },
         { id: 'platform-endpoints', title: '4.2 Platform Endpoints' },
+        { id: 'pagination', title: 'Pagination' },
         { id: 'common-format', title: 'Common Request Format' },
       ];
     case 'json-dataset':
