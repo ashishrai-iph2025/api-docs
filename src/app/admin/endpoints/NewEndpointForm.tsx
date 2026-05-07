@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Endpoint, HttpMethod } from '@/data/types';
+import { apiFetch } from '@/lib/csrf-client';
 import type { ContentData } from '@/lib/content-store';
 
 interface Props {
@@ -77,7 +78,7 @@ export function NewEndpointForm({ allContent, existingIds }: Props) {
     };
 
     try {
-      const res = await fetch('/api/admin/content', {
+      const res = await apiFetch('/api/admin/content', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

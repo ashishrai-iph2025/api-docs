@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Endpoint, Parameter } from '@/data/types';
 import type { ContentData } from '@/lib/content-store';
+import { apiFetch } from '@/lib/csrf-client';
 
 interface Props {
   endpoint: Endpoint;
@@ -56,7 +57,7 @@ export function EndpointEditor({ endpoint, allContent }: Props) {
       active: endpoint.active,
     };
     try {
-      const res = await fetch(`/api/admin/endpoints/${endpoint.id}`, {
+      const res = await apiFetch(`/api/admin/endpoints/${endpoint.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

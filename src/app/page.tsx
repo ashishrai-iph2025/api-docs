@@ -129,7 +129,6 @@ export default function HomePage() {
               href="/docs/introduction"
               className="inline-flex items-center gap-2 px-6 py-3 text-white text-[15px] font-semibold rounded-lg transition-colors shadow-sm"
               style={{ background: 'var(--color-brand)' }}
-              onMouseEnter={undefined}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -225,165 +224,72 @@ export default function HomePage() {
       </section>
 
       {/* ── QUICK START ── */}
+      {/* ── QUICK START + CTA ── */}
       <section className="py-20 px-6 border-b border-[var(--color-border)]">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="text-[12px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--color-brand)' }}>Quick Start</div>
-              <h2 className="text-[28px] font-bold mb-2" style={{ color: 'var(--color-fg)' }}>Up and running in 4 steps</h2>
-              <p className="text-[14px] mb-8" style={{ color: 'var(--color-fg-muted)' }}>
-                Integrate the MediaScan API in minutes with your preferred HTTP client.
-              </p>
-              <div className="space-y-5">
-                {quickStartSteps.map((s) => (
-                  <div key={s.step} className="flex gap-4">
-                    <div className="shrink-0 w-8 h-8 rounded-full text-[12px] font-bold flex items-center justify-center"
-                      style={{ background: 'var(--color-brand-subtle)', color: 'var(--color-brand)' }}>
-                      {s.step}
-                    </div>
-                    <div>
-                      <div className="text-[14px] font-bold" style={{ color: 'var(--color-fg)' }}>{s.title}</div>
-                      <div className="text-[13px] mt-0.5" style={{ color: 'var(--color-fg-muted)' }}>{s.desc}</div>
-                    </div>
+        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+          {/* Quick Start */}
+          <div>
+            <div className="text-[12px] font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--color-brand)' }}>Quick Start</div>
+            <h2 className="text-[28px] font-bold mb-2" style={{ color: 'var(--color-fg)' }}>Up and running in 4 steps</h2>
+            <p className="text-[14px] mb-8" style={{ color: 'var(--color-fg-muted)' }}>
+              Integrate the API in minutes with your preferred HTTP client.
+            </p>
+            <div className="space-y-5">
+              {quickStartSteps.map((s) => (
+                <div key={s.step} className="flex gap-4">
+                  <div className="shrink-0 w-8 h-8 rounded-full text-[12px] font-bold flex items-center justify-center"
+                    style={{ background: 'var(--color-brand-subtle)', color: 'var(--color-brand)' }}>
+                    {s.step}
                   </div>
-                ))}
-              </div>
-              <Link
-                href="/docs/login"
-                className="inline-flex items-center gap-2 mt-8 text-[14px] font-semibold hover:underline"
-                style={{ color: 'var(--color-brand)' }}
-              >
-                View full authentication guide →
-              </Link>
+                  <div>
+                    <div className="text-[14px] font-bold" style={{ color: 'var(--color-fg)' }}>{s.title}</div>
+                    <div className="text-[13px] mt-0.5" style={{ color: 'var(--color-fg-muted)' }}>{s.desc}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {/* Code preview — always dark, intentional */}
-            <div className="rounded-xl overflow-hidden border border-[var(--color-border)] shadow-sm">
-              <div className="flex items-center gap-2 px-4 py-3 bg-[#1c1e21] border-b border-white/10">
-                <div className="w-3 h-3 rounded-full bg-[#ef4444]/70" />
-                <div className="w-3 h-3 rounded-full bg-[#f59e0b]/70" />
-                <div className="w-3 h-3 rounded-full bg-[#22c55e]/70" />
-                <span className="ml-3 text-[12px] text-white/40 font-mono">example.sh</span>
-              </div>
-              <div className="bg-[#0d1117] p-5 text-[13px] font-mono leading-7 overflow-x-auto">
-                <div className="text-[#6e7781]"># Step 1 — Authenticate</div>
-                <div>
-                  <span className="text-[#f78166]">curl</span>
-                  <span className="text-[#e6edf3]"> -X POST \</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-[#79c0ff]">https://api.markscan.co.in</span>
-                  <span className="text-[#e6edf3]">/Login \</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-[#e6edf3]">-d </span>
-                  <span className="text-[#a5d6ff]">{`'{"username":"u","password":"p"}'`}</span>
-                </div>
-                <div className="mt-4 text-[#6e7781]"># Step 2 — Fetch infringements</div>
-                <div>
-                  <span className="text-[#f78166]">curl</span>
-                  <span className="text-[#e6edf3]"> -X POST \</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-[#79c0ff]">https://api.markscan.co.in</span>
-                  <span className="text-[#e6edf3]">/getinfringements/YouTube \</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-[#e6edf3]">-H </span>
-                  <span className="text-[#a5d6ff]">"Authorization: Bearer &lt;token&gt;"</span>
-                  <span className="text-[#e6edf3]"> \</span>
-                </div>
-                <div className="pl-4">
-                  <span className="text-[#e6edf3]">-d </span>
-                  <span className="text-[#a5d6ff]">{`'{"startdate":"2025-01-01T00:00:00Z"}'`}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── ENDPOINTS PREVIEW ── */}
-      <section className="py-20 px-6 border-b border-[var(--color-border)]" style={{ background: 'var(--color-surface)' }}>
-        <div className="mx-auto max-w-6xl">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="text-[26px] font-bold" style={{ color: 'var(--color-fg)' }}>API Endpoints</h2>
-              <p className="text-[14px] mt-1" style={{ color: 'var(--color-fg-muted)' }}>
-                {endpoints.length} endpoints, all returning structured JSON.
-              </p>
-            </div>
-            <Link href="/docs/endpoints" className="text-[13.5px] font-semibold hover:underline" style={{ color: 'var(--color-brand)' }}>
-              View full reference →
+            <Link
+              href="/docs/login"
+              className="inline-flex items-center gap-2 mt-8 text-[14px] font-semibold hover:underline"
+              style={{ color: 'var(--color-brand)' }}
+            >
+              View full authentication guide →
             </Link>
           </div>
-          <div className="rounded-xl border border-[var(--color-border)] overflow-hidden divide-y divide-[var(--color-border)]"
+
+          {/* CTA */}
+          <div className="rounded-2xl border border-[var(--color-border)] p-10 flex flex-col justify-center"
             style={{ background: 'var(--color-card)' }}>
-            {endpoints.slice(0, 6).map((ep) => (
+            <h2 className="text-[24px] font-bold mb-3" style={{ color: 'var(--color-fg)' }}>Ready to start building?</h2>
+            <p className="text-[14px] mb-8 leading-relaxed" style={{ color: 'var(--color-fg-muted)' }}>
+              Review the authentication flow, explore endpoints, and check the JSON response schema.
+            </p>
+            <div className="flex flex-col gap-3">
               <Link
-                key={ep.id}
-                href={`/docs/endpoints/${ep.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 transition-colors group hover:bg-[var(--color-surface)]"
+                href="/docs/introduction"
+                className="px-5 py-2.5 text-white text-[14px] font-semibold rounded-lg transition-colors text-center"
+                style={{ background: 'var(--color-brand)' }}
               >
-                <span className="inline-block shrink-0 px-2 py-0.5 rounded text-[11px] font-bold font-mono"
-                  style={{ background: 'var(--color-brand-subtle)', color: 'var(--color-brand)' }}>
-                  POST
-                </span>
-                <code className="text-[13px] font-mono flex-1 min-w-0 truncate" style={{ color: 'var(--color-fg-muted)' }}>
-                  {ep.path}
-                </code>
-                <span className="text-[13.5px] font-medium shrink-0 hidden sm:block" style={{ color: 'var(--color-fg)' }}>
-                  {ep.title}
-                </span>
-                <svg className="w-4 h-4 ml-auto shrink-0 transition-colors" style={{ color: 'var(--color-border-strong)' }}
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                Get Started
               </Link>
-            ))}
-            {endpoints.length > 6 && (
               <Link
-                href="/docs/endpoints"
-                className="flex items-center justify-center gap-2 px-5 py-3.5 text-[13px] font-semibold transition-colors hover:bg-[var(--color-surface)]"
-                style={{ color: 'var(--color-brand)' }}
+                href="/docs/json-dataset"
+                className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)] text-center"
+                style={{ background: 'var(--color-surface)', color: 'var(--color-fg)' }}
               >
-                +{endpoints.length - 6} more endpoints →
+                JSON Reference
               </Link>
-            )}
+              <Link
+                href="/docs/support"
+                className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)] text-center"
+                style={{ background: 'var(--color-surface)', color: 'var(--color-fg)' }}
+              >
+                Contact Support
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── CTA BANNER ── */}
-      <section className="py-16 px-6 border-b border-[var(--color-border)]">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[26px] font-bold mb-3" style={{ color: 'var(--color-fg)' }}>Ready to start building?</h2>
-          <p className="text-[14px] mb-8" style={{ color: 'var(--color-fg-muted)' }}>
-            Review the authentication flow, explore endpoints, and check the JSON response schema.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link
-              href="/docs/introduction"
-              className="px-5 py-2.5 text-white text-[14px] font-semibold rounded-lg transition-colors"
-              style={{ background: 'var(--color-brand)' }}
-            >
-              Get Started
-            </Link>
-            <Link
-              href="/docs/json-dataset"
-              className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)]"
-              style={{ background: 'var(--color-card)', color: 'var(--color-fg)' }}
-            >
-              JSON Reference
-            </Link>
-            <Link
-              href="/docs/support"
-              className="px-5 py-2.5 border border-[var(--color-border)] text-[14px] font-semibold rounded-lg transition-colors hover:bg-[var(--color-surface)]"
-              style={{ background: 'var(--color-card)', color: 'var(--color-fg)' }}
-            >
-              Contact Support
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -404,11 +310,11 @@ export default function HomePage() {
             <Link href="/docs/support" className="hover:text-[var(--color-brand)] transition-colors">Support</Link>
             <span style={{ color: 'var(--color-border-strong)' }}>|</span>
             <Link
-              href="/admin/login"
-              className="hover:text-[var(--color-fg-muted)] transition-colors text-[12px]"
-              style={{ color: 'var(--color-border-strong)' }}
+              href="/login"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-[13px] font-semibold text-white transition-colors"
+              style={{ background: 'var(--color-brand)' }}
             >
-              Admin
+              Login
             </Link>
           </div>
         </div>

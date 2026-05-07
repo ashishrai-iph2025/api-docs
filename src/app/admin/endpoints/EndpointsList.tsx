@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRef, useState, useCallback } from 'react';
 import type { Endpoint } from '@/data/types';
+import { apiFetch } from '@/lib/csrf-client';
 
 interface Props {
   initialEndpoints: Endpoint[];
@@ -24,7 +25,7 @@ export function EndpointsList({ initialEndpoints }: Props) {
     setSaving(true);
     setSavedMsg('');
     try {
-      await fetch('/api/admin/endpoints/reorder', {
+      await apiFetch('/api/admin/endpoints/reorder', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ order: ordered.map((e) => e.id) }),
@@ -50,7 +51,7 @@ export function EndpointsList({ initialEndpoints }: Props) {
     setSavedMsg('');
     setEndpoints((prev) => prev.map((ep) => ep.id === id ? { ...ep, active } : ep));
     try {
-      await fetch('/api/admin/endpoints/toggle', {
+      await apiFetch('/api/admin/endpoints/toggle', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, active }),

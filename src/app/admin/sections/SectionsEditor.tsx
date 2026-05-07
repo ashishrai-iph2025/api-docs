@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { apiFetch } from '@/lib/csrf-client';
 import type { ContentData, SupportContact } from '@/lib/content-store';
 
 const SECTION_TITLE_KEYS = [
@@ -76,7 +77,7 @@ export function SectionsEditor({ initialData }: { initialData: ContentData }) {
       support: { description: supportDesc, contacts: supportContacts, footerNote: supportFooter },
       authorization: { description: authDesc, headerNote: authHeaderNote, tokenExample: authTokenExample },
     };
-    const res = await fetch('/api/admin/content', {
+    const res = await apiFetch('/api/admin/content', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

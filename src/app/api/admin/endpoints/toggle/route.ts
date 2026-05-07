@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getContentData, writeContent } from '@/lib/content-store';
+import { getAuthContext } from '@/lib/session';
+import { logActivity } from '@/lib/db';
 
 export async function PUT(req: NextRequest) {
   try {
@@ -11,6 +13,17 @@ export async function PUT(req: NextRequest) {
     const endpoints = { ...data.endpoints };
     endpoints[id] = { ...endpoints[id], active };
     writeContent({ ...data, endpoints });
+
+    const ctx = await getAuthContext(req);
+    logActivity({
+      user_id: ctx?.user.id,
+      email: ctx?.user.email,
+      action: active ? 'endpoint_enabled' : 'endpoint_disabled',
+      resource: id,
+      ip_address: req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? undefined,
+      user_agent: req.headers.get('user-agent') ?? undefined,
+    });
+
     return NextResponse.json({ ok: true });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
