@@ -4,6 +4,19 @@ import { getSmtpSettings } from './db';
 function getSmtpConfig() {
   // DB settings take priority over env vars (set via admin Settings page)
   const db = getSmtpSettings();
+  const provider = (process.env.EMAIL_PROVIDER || process.env.MAIL_PROVIDER || '').toLowerCase();
+
+  if (provider === 'ses' || provider === 'aws-ses' || process.env.AWS_SES_REGION) {
+    const region = process.env.AWS_SES_REGION || process.env.SES_REGION || 'ap-south-1';
+    return {
+      host: process.env.AWS_SES_SMTP_HOST || process.env.SES_SMTP_HOST || db.smtp_host || `email-smtp.${region}.amazonaws.com`,
+      port: parseInt(process.env.AWS_SES_SMTP_PORT || process.env.SES_SMTP_PORT || db.smtp_port || '587'),
+      secure: (process.env.AWS_SES_SMTP_SECURE || process.env.SES_SMTP_SECURE || db.smtp_secure || 'false') === 'true',
+      user: process.env.AWS_SES_SMTP_USER || process.env.SES_SMTP_USER || db.smtp_user || '',
+      pass: process.env.AWS_SES_SMTP_PASS || process.env.SES_SMTP_PASS || db.smtp_pass || '',
+      from: process.env.AWS_SES_FROM || process.env.SES_FROM || db.smtp_from || '',
+    };
+  }
 
   return {
     host:   db.smtp_host   || process.env.SMTP_HOST   || 'smtp.gmail.com',

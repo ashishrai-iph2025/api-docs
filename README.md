@@ -30,6 +30,37 @@ pnpm start
 
 ---
 
+## Email OTP with AWS SES
+
+For production OTP email, configure AWS SES SMTP in your hosting provider's environment variables:
+
+```env
+EMAIL_PROVIDER=ses
+AWS_SES_REGION=ap-south-1
+AWS_SES_SMTP_USER=your-ses-smtp-username
+AWS_SES_SMTP_PASS=your-ses-smtp-password
+AWS_SES_FROM=MediaScan <no-reply@yourdomain.com>
+```
+
+The app will use `email-smtp.<AWS_SES_REGION>.amazonaws.com` on port `587` with STARTTLS by default.
+
+AWS SES requirements:
+
+- Use SES SMTP credentials, not regular AWS access keys.
+- Verify `AWS_SES_FROM` in SES, or verify the whole sending domain.
+- If your SES account is still in sandbox, recipient email addresses must also be verified.
+- Make sure your deployment platform allows outbound SMTP to port `587`.
+
+Optional overrides:
+
+```env
+AWS_SES_SMTP_HOST=email-smtp.ap-south-1.amazonaws.com
+AWS_SES_SMTP_PORT=587
+AWS_SES_SMTP_SECURE=false
+```
+
+---
+
 ## Project layout
 
 ```

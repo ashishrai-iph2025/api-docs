@@ -48,7 +48,7 @@ export default function AdminSettingsPage() {
         }),
       });
       if (res.ok) {
-        setSuccess('SMTP settings saved. Changes take effect immediately.');
+        setSuccess('Email settings saved. Changes take effect immediately.');
         if (smtpPass && smtpPass !== '••••••••') setHasPass(true);
       } else {
         const d = await res.json();
@@ -88,7 +88,7 @@ export default function AdminSettingsPage() {
               </svg>
             </div>
             <div>
-              <h2 className="text-[15px] font-bold text-[var(--color-fg)]">Email / SMTP</h2>
+              <h2 className="text-[15px] font-bold text-[var(--color-fg)]">Email / AWS SES SMTP</h2>
               <p className="text-[12px] text-[var(--color-fg-muted)]">Used to send OTP login codes to users</p>
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function AdminSettingsPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2 sm:col-span-1">
                   <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">SMTP Host</label>
-                  <input className={inputCls} style={inputStyle} placeholder="smtp.gmail.com"
+                  <input className={inputCls} style={inputStyle} placeholder="email-smtp.ap-south-1.amazonaws.com"
                     value={smtpHost} onChange={e => setSmtpHost(e.target.value)} />
                 </div>
                 <div>
@@ -120,29 +120,29 @@ export default function AdminSettingsPage() {
               </div>
 
               <div>
-                <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">Username / Email</label>
-                <input className={inputCls} style={inputStyle} placeholder="you@gmail.com"
+                <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">SMTP Username</label>
+                <input className={inputCls} style={inputStyle} placeholder="AWS SES SMTP username"
                   autoComplete="off"
                   value={smtpUser} onChange={e => setSmtpUser(e.target.value)} />
               </div>
 
               <div>
                 <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">
-                  Password / App Password
+                  SMTP Password
                   {hasPass && <span className="ml-2 normal-case font-normal text-[var(--color-success)]">— saved</span>}
                 </label>
                 <input className={inputCls} style={inputStyle} type="password"
-                  placeholder={hasPass ? 'Leave blank to keep existing' : 'App password or SMTP password'}
+                  placeholder={hasPass ? 'Leave blank to keep existing' : 'AWS SES SMTP password'}
                   autoComplete="new-password"
                   value={smtpPass} onChange={e => setSmtpPass(e.target.value)} />
                 <p className="mt-1 text-[11.5px] text-[var(--color-fg-muted)]">
-                  For Gmail, generate an <strong>App Password</strong> at myaccount.google.com → Security → App passwords.
+                  Use the SMTP credentials generated in AWS SES, not your AWS access key.
                 </p>
               </div>
 
               <div>
-                <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">From Address</label>
-                <input className={inputCls} style={inputStyle} placeholder='MediaScan <noreply@example.com>'
+                <label className="block text-[11.5px] font-semibold uppercase tracking-wide text-[var(--color-fg-muted)] mb-1">Verified From Address</label>
+                <input className={inputCls} style={inputStyle} placeholder='MediaScan <no-reply@yourdomain.com>'
                   value={smtpFrom} onChange={e => setSmtpFrom(e.target.value)} />
               </div>
 
@@ -155,7 +155,7 @@ export default function AdminSettingsPage() {
 
               <button type="submit" disabled={saving}
                 className="w-full py-2.5 text-white text-[13.5px] font-semibold rounded-lg bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] transition-colors disabled:opacity-50">
-                {saving ? 'Saving…' : 'Save SMTP Settings'}
+                {saving ? 'Saving…' : 'Save Email Settings'}
               </button>
             </form>
           )}

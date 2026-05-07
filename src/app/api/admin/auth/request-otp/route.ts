@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     user_agent: req.headers.get('user-agent') ?? undefined,
   });
 
-  // Send email in background — don't block the HTTP response
+  // Wait for the mail provider so deployments do not report success before SES accepts the email.
   try {
     await sendOtpEmail(email, code, user.name || undefined);
   } catch (err) {

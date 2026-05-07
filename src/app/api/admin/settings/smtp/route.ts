@@ -9,14 +9,29 @@ export async function GET(req: NextRequest) {
   }
 
   const db = getSmtpSettings();
+  const provider = (process.env.EMAIL_PROVIDER || process.env.MAIL_PROVIDER || '').toLowerCase();
+  const useSes = provider === 'ses' || provider === 'aws-ses' || !!process.env.AWS_SES_REGION;
+  const sesRegion = process.env.AWS_SES_REGION || process.env.SES_REGION || 'ap-south-1';
 
   // Merge DB values with env var fallbacks
-  const host   = db.smtp_host   || process.env.SMTP_HOST   || '';
-  const port   = db.smtp_port   || process.env.SMTP_PORT   || '587';
-  const secure = db.smtp_secure || process.env.SMTP_SECURE || 'false';
-  const user   = db.smtp_user   || process.env.SMTP_USER   || '';
-  const from   = db.smtp_from   || process.env.SMTP_FROM   || '';
-  const hasPass = !!(db.smtp_pass || process.env.SMTP_PASS);
+  const host = useSes
+    ? process.env.AWS_SES_SMTP_HOST || process.env.SES_SMTP_HOST || db.smtp_host || `email-smtp.${sesRegion}.amazonaws.com`
+    : db.smtp_host || process.env.SMTP_HOST || '';
+  const port = useSes
+    ? process.env.AWS_SES_SMTP_PORT || process.env.SES_SMTP_PORT || db.smtp_port || '587'
+    : db.smtp_port || process.env.SMTP_PORT || '587';
+  const secure = useSes
+    ? process.env.AWS_SES_SMTP_SECURE || process.env.SES_SMTP_SECURE || db.smtp_secure || 'false'
+    : db.smtp_secure || process.env.SMTP_SECURE || 'false';
+  const user = useSes
+    ? process.env.AWS_SES_SMTP_USER || process.env.SES_SMTP_USER || db.smtp_user || ''
+    : db.smtp_user || process.env.SMTP_USER || '';
+  const from = useSes
+    ? process.env.AWS_SES_FROM || process.env.SES_FROM || db.smtp_from || ''
+    : db.smtp_from || process.env.SMTP_FROM || '';
+  const hasPass = useSes
+    ? !!(process.env.AWS_SES_SMTP_PASS || process.env.SES_SMTP_PASS || db.smtp_pass)
+    : !!(db.smtp_pass || process.env.SMTP_PASS);
 
   return NextResponse.json({ host, port, secure, user, from, hasPass });
 }
