@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserById, updateUser, setUserActive, setUserOtpEnabled, getUserByEmail, logActivity } from '@/lib/db';
+import { getUserById, updateUser, setUserActive, setUserOtpEnabled, setUserPassword, hashPassword, getUserByEmail, logActivity, type User } from '@/lib/db';
+
+function sanitize(u: User) {
+  const { password_hash, ...rest } = u;
+  return { ...rest, has_password: !!password_hash };
+}
 import { getAuthContext } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -57,7 +62,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     user_agent: req.headers.get('user-agent') ?? undefined,
   });
 
-  return NextResponse.json({ user: updated });
+  return NextResponse.json({ user: updated ? sanitize(updated) : null });
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
@@ -69,17 +74,33 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const target = getUserById(params.id);
   if (!target) return NextResponse.json({ error: 'User not found.' }, { status: 404 });
 
-  // Prevent admin from deactivating themselves
-  if (params.id === ctx.user.id) {
-    return NextResponse.json({ error: 'You cannot deactivate your own account.' }, { status: 400 });
-  }
-
-  let body: { is_active?: boolean; otp_enabled?: boolean };
+  let body: { is_active?: boolean; otp_enabled?: boolean; password?: string };
   try { body = await req.json(); } catch {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
+  if (typeof body.password === 'string') {
+    if (body.password.length < 8) {
+      return NextResponse.json({ error: 'Password must be at least 8 characters.' }, { status: 400 });
+    }
+    const hash = await hashPassword(body.password);
+    setUserPassword(params.id, hash);
+    logActivity({
+      user_id: ctx.user.id,
+      email: ctx.user.email,
+      action: 'user_password_set',
+      resource: params.id,
+      details: { target_email: target.email },
+      ip_address: req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? undefined,
+      user_agent: req.headers.get('user-agent') ?? undefined,
+    });
+    return NextResponse.json({ ok: true, has_password: true });
+  }
+
   if (typeof body.is_active === 'boolean') {
+    if (params.id === ctx.user.id) {
+      return NextResponse.json({ error: 'You cannot deactivate your own account.' }, { status: 400 });
+    }
     setUserActive(params.id, body.is_active);
     logActivity({
       user_id: ctx.user.id,

@@ -2,6 +2,22 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
+import { promisify } from 'util';
+
+const scrypt = promisify(crypto.scrypt);
+
+export async function hashPassword(password: string): Promise<string> {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const derived = await scrypt(password, salt, 64) as Buffer;
+  return `${salt}:${derived.toString('hex')}`;
+}
+
+export async function verifyPassword(password: string, stored: string): Promise<boolean> {
+  const [salt, hash] = stored.split(':');
+  if (!salt || !hash) return false;
+  const derived = await scrypt(password, salt, 64) as Buffer;
+  return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), derived);
+}
 
 const DB_PATH = path.join(process.cwd(), 'data', 'app.db');
 
@@ -78,10 +94,13 @@ function initSchema(db: Database.Database) {
     );
   `);
 
-  // Migration: add otp_enabled column if it doesn't exist yet
+  // Migrations
   const cols = db.prepare("PRAGMA table_info(users)").all() as { name: string }[];
   if (!cols.find(c => c.name === 'otp_enabled')) {
     db.exec("ALTER TABLE users ADD COLUMN otp_enabled INTEGER NOT NULL DEFAULT 1");
+  }
+  if (!cols.find(c => c.name === 'password_hash')) {
+    db.exec("ALTER TABLE users ADD COLUMN password_hash TEXT");
   }
 
   db.exec(`
@@ -96,13 +115,27 @@ function initSchema(db: Database.Database) {
 function seedAdminUser(db: Database.Database) {
   const email = process.env.ADMIN_EMAIL;
   if (!email) return;
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-  if (existing) return;
-  const now = new Date().toISOString();
-  db.prepare(`
-    INSERT INTO users (id, email, name, role, is_active, created_at, updated_at)
-    VALUES (?, ?, 'Administrator', 'admin', 1, ?, ?)
-  `).run(crypto.randomUUID(), email, now, now);
+  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as { id: string } | null;
+  if (!existing) {
+    const now = new Date().toISOString();
+    const id = crypto.randomUUID();
+    db.prepare(`
+      INSERT INTO users (id, email, name, role, is_active, created_at, updated_at)
+      VALUES (?, ?, 'Administrator', 'admin', 1, ?, ?)
+    `).run(id, email, now, now);
+  }
+  // Set password from env if provided and not already set
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (adminPassword) {
+    const user = db.prepare('SELECT id, password_hash FROM users WHERE email = ?').get(email) as { id: string; password_hash: string | null } | null;
+    if (user && !user.password_hash) {
+      // Hash synchronously for seed (blocking is fine at startup)
+      const salt = crypto.randomBytes(16).toString('hex');
+      const derived = crypto.scryptSync(adminPassword, salt, 64);
+      const hash = `${salt}:${derived.toString('hex')}`;
+      db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, user.id);
+    }
+  }
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -114,6 +147,7 @@ export interface User {
   role: 'admin' | 'user';
   is_active: number;
   otp_enabled: number;
+  password_hash: string | null;
   created_at: string;
   updated_at: string;
   created_by: string | null;
@@ -191,6 +225,11 @@ export function updateUser(id: string, data: { name?: string; role?: 'admin' | '
   values.push(id);
   getDb().prepare(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`).run(...values);
   return getUserById(id);
+}
+
+export function setUserPassword(id: string, hash: string): void {
+  getDb().prepare('UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?')
+    .run(hash, new Date().toISOString(), id);
 }
 
 export function setUserOtpEnabled(id: string, enabled: boolean): void {
