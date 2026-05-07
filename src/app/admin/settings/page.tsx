@@ -48,8 +48,8 @@ export default function AdminSettingsPage() {
         }),
       });
       if (res.ok) {
-        setSuccess('SMTP settings saved. Restart the server for changes to take effect.');
-        setHasPass(!!smtpPass && smtpPass !== '••••••••' ? true : hasPass);
+        setSuccess('SMTP settings saved. Changes take effect immediately.');
+        if (smtpPass && smtpPass !== '••••••••') setHasPass(true);
       } else {
         const d = await res.json();
         setError(d.error || 'Failed to save settings.');

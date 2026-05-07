@@ -1,31 +1,41 @@
 import nodemailer from 'nodemailer';
+import { getSmtpSettings } from './db';
 
-function createTransport() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-    connectionTimeout: 8000,   // 8s to establish TCP connection
-    greetingTimeout:   5000,   // 5s for SMTP greeting
-    socketTimeout:     10000,  // 10s idle socket
-  });
+function getSmtpConfig() {
+  // DB settings take priority over env vars (set via admin Settings page)
+  const db = getSmtpSettings();
+
+  return {
+    host:   db.smtp_host   || process.env.SMTP_HOST   || 'smtp.gmail.com',
+    port:   parseInt(db.smtp_port   || process.env.SMTP_PORT   || '587'),
+    secure: (db.smtp_secure || process.env.SMTP_SECURE || 'false') === 'true',
+    user:   db.smtp_user   || process.env.SMTP_USER   || '',
+    pass:   db.smtp_pass   || process.env.SMTP_PASS   || '',
+    from:   db.smtp_from   || process.env.SMTP_FROM   || '',
+  };
 }
 
 export async function sendOtpEmail(to: string, code: string, name?: string): Promise<void> {
-  // Always log to console as a fallback (useful when email fails or in dev)
+  // Always log to console as fallback
   console.log(`\n${'─'.repeat(50)}`);
   console.log(`[OTP] Code for ${to}: ${code}`);
   console.log(`${'─'.repeat(50)}\n`);
 
-  if (!process.env.SMTP_USER) return;
+  const cfg = getSmtpConfig();
+  if (!cfg.user || !cfg.pass) return; // no SMTP configured — console only
 
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER;
   const greeting = name ? `Hi ${name},` : 'Hello,';
-  const transporter = createTransport();
+  const from = cfg.from || cfg.user;
+
+  const transporter = nodemailer.createTransport({
+    host: cfg.host,
+    port: cfg.port,
+    secure: cfg.secure,
+    auth: { user: cfg.user, pass: cfg.pass },
+    connectionTimeout: 8000,
+    greetingTimeout:   5000,
+    socketTimeout:     10000,
+  });
 
   await transporter.sendMail({
     from,
@@ -66,7 +76,6 @@ export async function sendOtpEmail(to: string, code: string, name?: string): Pro
     </td></tr>
   </table>
 </body>
-</html>
-    `.trim(),
+</html>`.trim(),
   });
 }

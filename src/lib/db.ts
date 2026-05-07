@@ -70,6 +70,14 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_sessions_user    ON sessions(user_id);
   `);
 
+  // Settings table for runtime config (SMTP etc.)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS settings (
+      key   TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    );
+  `);
+
   // Migration: add otp_enabled column if it doesn't exist yet
   const cols = db.prepare("PRAGMA table_info(users)").all() as { name: string }[];
   if (!cols.find(c => c.name === 'otp_enabled')) {
@@ -329,4 +337,20 @@ export function getRecentActivity(limit = 10): ActivityLog[] {
   return getDb().prepare(
     'SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT ?'
   ).all(limit) as ActivityLog[];
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+
+export function getSetting(key: string): string | null {
+  const row = getDb().prepare('SELECT value FROM settings WHERE key = ?').get(key) as { value: string } | null;
+  return row?.value ?? null;
+}
+
+export function setSetting(key: string, value: string): void {
+  getDb().prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(key, value);
+}
+
+export function getSmtpSettings(): Record<string, string> {
+  const rows = getDb().prepare("SELECT key, value FROM settings WHERE key LIKE 'smtp_%'").all() as { key: string; value: string }[];
+  return Object.fromEntries(rows.map(r => [r.key, r.value]));
 }
