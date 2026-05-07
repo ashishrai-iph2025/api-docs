@@ -25,7 +25,9 @@ export async function sendOtpEmail(to: string, code: string, name?: string): Pro
   if (!cfg.user || !cfg.pass) return; // no SMTP configured — console only
 
   const greeting = name ? `Hi ${name},` : 'Hello,';
-  const from = cfg.from || cfg.user;
+  const from = cfg.from && cfg.from.includes('@')
+    ? cfg.from
+    : `"${cfg.from || 'API Documentation'}" <${cfg.user}>`;
 
   const transporter = nodemailer.createTransport({
     host: cfg.host,

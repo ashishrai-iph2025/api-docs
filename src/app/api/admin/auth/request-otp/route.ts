@@ -72,9 +72,15 @@ export async function POST(req: NextRequest) {
   });
 
   // Send email in background — don't block the HTTP response
-  sendOtpEmail(email, code, user.name || undefined).catch(err =>
-    console.error('[OTP] Email send failed:', err)
-  );
+  try {
+    await sendOtpEmail(email, code, user.name || undefined);
+  } catch (err) {
+    console.error('[OTP] Email send failed:', err);
+    return NextResponse.json(
+      { error: 'Could not send verification email. Please contact support.' },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }
