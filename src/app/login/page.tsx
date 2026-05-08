@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, FormEvent, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 function LoginForm() {
   const [email,    setEmail]    = useState('');
@@ -10,7 +10,6 @@ function LoginForm() {
   const [loading,  setLoading]  = useState(false);
 
   const emailRef = useRef<HTMLInputElement>(null);
-  const router   = useRouter();
   const params   = useSearchParams();
 
   useEffect(() => { emailRef.current?.focus(); }, []);
@@ -44,11 +43,14 @@ function LoginForm() {
   }
 
   function redirectAfterLogin(role: string, next: string) {
+    // Full page navigation so cookies are committed before the middleware runs.
+    let dest: string;
     if (role === 'admin') {
-      router.replace(next.startsWith('/') ? next : '/admin/dashboard');
+      dest = next.startsWith('/admin') ? next : '/admin/dashboard';
     } else {
-      router.replace(next.startsWith('/docs') ? next : '/docs/introduction');
+      dest = next.startsWith('/docs') ? next : '/docs/introduction';
     }
+    window.location.href = dest;
   }
 
   return (
