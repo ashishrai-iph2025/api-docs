@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useMobileNav } from '@/lib/mobile-nav-context';
 import { getCsrfToken } from '@/lib/csrf-client';
+import { ChangePasswordModal } from '@/components/ChangePasswordModal';
 
 const navLinks = [
   { href: '/docs/introduction', label: 'Docs' },
@@ -20,6 +21,7 @@ export function Header() {
   const pathname = usePathname();
   const router   = useRouter();
   const { setOpen } = useMobileNav();
+  const [showChangePw, setShowChangePw] = useState(false);
 
   useEffect(() => {
     if (!pathname.startsWith('/docs')) return;
@@ -63,6 +65,7 @@ export function Header() {
   }
 
   return (
+    <>
     <header className="sticky top-0 z-50 h-14 border-b border-[var(--color-border)] bg-[var(--color-bg)]/95 backdrop-blur-sm">
       <div className="mx-auto flex h-full max-w-8xl flex-wrap items-center gap-3 px-4 sm:px-6">
         {/* Logo */}
@@ -126,6 +129,18 @@ export function Header() {
           {/* Theme toggle */}
           <ThemeToggle />
 
+          {/* Change password */}
+          <button
+            onClick={() => setShowChangePw(true)}
+            title="Change password"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12.5px] font-medium text-[var(--color-fg-muted)] border border-[var(--color-border)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-fg)] transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+            Password
+          </button>
+
           {/* Sign-out */}
           <button
             onClick={handleSignOut}
@@ -139,5 +154,8 @@ export function Header() {
         </div>
       </div>
     </header>
+
+    {showChangePw && <ChangePasswordModal onClose={() => setShowChangePw(false)} />}
+    </>
   );
 }
