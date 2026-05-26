@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 320" fill="none">
+  <!-- Bar 1 — shortest -->
+  <polygon points="0,320 0,252 72,210 72,320" fill="#ffffff"/>
+  <!-- Bar 2 -->
+  <polygon points="95,320 95,185 167,143 167,320" fill="#ffffff"/>
+  <!-- Bar 3 -->
+  <polygon points="190,320 190,110 262,68 262,320" fill="#ffffff"/>
+  <!-- Bar 4 — large building -->
+  <polygon points="284,320 284,8 420,0 420,320" fill="#ffffff"/>
+  <!-- IP HOUSE wordmark -->
+  <text
+    x="460"
+    y="262"
+    font-family="'Arial Black','Arial Bold',Arial,sans-serif"
+    font-weight="900"
+    font-size="218"
+    letter-spacing="2"
+    fill="#ffffff"
+  >IP HOUSE</text>
+</svg>

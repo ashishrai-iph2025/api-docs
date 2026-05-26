@@ -50,7 +50,7 @@ export function Header() {
     };
   }, [pathname, router]);
 
-  if (pathname.startsWith('/admin') || pathname === '/login' || pathname === '/' || pathname === '/admin/login') {
+  if (pathname.startsWith('/admin') || pathname === '/intake-form' || pathname === '/login' || pathname === '/' || pathname === '/admin/login') {
     return null;
   }
 

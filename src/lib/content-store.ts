@@ -139,6 +139,12 @@ export function getNavGroups(): NavGroup[] {
         { id: 'support', title: `7. ${titles['support'] ?? 'Support'}` },
       ],
     },
+    {
+      title: 'Tools',
+      items: [
+        { id: 'playground', title: 'API Playground' },
+      ],
+    },
   ];
 }
 

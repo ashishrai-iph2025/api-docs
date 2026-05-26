@@ -92,6 +92,46 @@ function initSchema(db: Database.Database) {
       key   TEXT PRIMARY KEY,
       value TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS playground_logs (
+      id                TEXT PRIMARY KEY,
+      user_id           TEXT NOT NULL,
+      token_id          TEXT,
+      endpoint_id       TEXT NOT NULL,
+      endpoint_title    TEXT NOT NULL,
+      method            TEXT NOT NULL,
+      path              TEXT NOT NULL,
+      api_username      TEXT,
+      request_body      TEXT,
+      response_status   INTEGER,
+      response_time_ms  INTEGER,
+      response_preview  TEXT,
+      token_issued      INTEGER NOT NULL DEFAULT 0,
+      created_at        TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (token_id) REFERENCES playground_tokens(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS playground_tokens (
+      id                TEXT PRIMARY KEY,
+      user_id           TEXT NOT NULL,
+      api_username      TEXT,
+      login_url         TEXT NOT NULL,
+      token_hash        TEXT NOT NULL,
+      token_value       TEXT NOT NULL,
+      token_preview     TEXT NOT NULL,
+      response_status   INTEGER,
+      response_time_ms  INTEGER,
+      created_at        TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_playground_user    ON playground_logs(user_id);
+    CREATE INDEX IF NOT EXISTS idx_playground_created ON playground_logs(created_at);
+    CREATE INDEX IF NOT EXISTS idx_playground_endpoint ON playground_logs(endpoint_id);
+    CREATE INDEX IF NOT EXISTS idx_pg_tokens_user      ON playground_tokens(user_id);
+    CREATE INDEX IF NOT EXISTS idx_pg_tokens_hash      ON playground_tokens(token_hash);
+    CREATE INDEX IF NOT EXISTS idx_pg_tokens_created   ON playground_tokens(created_at);
   `);
 
   // Migrations
@@ -103,12 +143,18 @@ function initSchema(db: Database.Database) {
     db.exec("ALTER TABLE users ADD COLUMN password_hash TEXT");
   }
 
+  const playgroundLogCols = db.prepare("PRAGMA table_info(playground_logs)").all() as { name: string }[];
+  if (!playgroundLogCols.find(c => c.name === 'token_id')) {
+    db.exec("ALTER TABLE playground_logs ADD COLUMN token_id TEXT");
+  }
+
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
     CREATE INDEX IF NOT EXISTS idx_otp_email        ON otp_tokens(email);
     CREATE INDEX IF NOT EXISTS idx_activity_user    ON activity_logs(user_id);
     CREATE INDEX IF NOT EXISTS idx_activity_action  ON activity_logs(action);
     CREATE INDEX IF NOT EXISTS idx_activity_created ON activity_logs(created_at);
+    CREATE INDEX IF NOT EXISTS idx_playground_token ON playground_logs(token_id);
   `);
 }
 
@@ -392,4 +438,223 @@ export function setSetting(key: string, value: string): void {
 export function getSmtpSettings(): Record<string, string> {
   const rows = getDb().prepare("SELECT key, value FROM settings WHERE key LIKE 'smtp_%'").all() as { key: string; value: string }[];
   return Object.fromEntries(rows.map(r => [r.key, r.value]));
+}
+
+// ── Active sessions (with user info) ──────────────────────────────────────────
+
+export interface SessionWithUser extends Session {
+  user_email: string;
+  user_name: string;
+  user_role: string;
+}
+
+export function getAllActiveSessions(): SessionWithUser[] {
+  return getDb().prepare(`
+    SELECT s.*, u.email as user_email, u.name as user_name, u.role as user_role
+    FROM sessions s
+    JOIN users u ON u.id = s.user_id
+    WHERE s.expires_at > ?
+    ORDER BY s.created_at DESC
+  `).all(new Date().toISOString()) as SessionWithUser[];
+}
+
+export function getSessionsByUser(userId: string): Session[] {
+  return getDb().prepare(
+    'SELECT * FROM sessions WHERE user_id = ? AND expires_at > ? ORDER BY created_at DESC'
+  ).all(userId, new Date().toISOString()) as Session[];
+}
+
+// ── Playground logs ───────────────────────────────────────────────────────────
+
+export interface PlaygroundLog {
+  id: string;
+  user_id: string;
+  token_id: string | null;
+  endpoint_id: string;
+  endpoint_title: string;
+  method: string;
+  path: string;
+  api_username: string | null;
+  request_body: string | null;
+  response_status: number | null;
+  response_time_ms: number | null;
+  response_preview: string | null;
+  token_issued: number;
+  created_at: string;
+}
+
+export interface PlaygroundToken {
+  id: string;
+  user_id: string;
+  api_username: string | null;
+  login_url: string;
+  token_hash: string;
+  token_value: string;
+  token_preview: string;
+  response_status: number | null;
+  response_time_ms: number | null;
+  created_at: string;
+}
+
+function hashPlaygroundToken(token: string): string {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+function previewPlaygroundToken(token: string): string {
+  if (token.length <= 24) return token;
+  return `${token.slice(0, 12)}...${token.slice(-8)}`;
+}
+
+export function createPlaygroundToken(data: {
+  user_id: string;
+  api_username?: string;
+  login_url: string;
+  token: string;
+  response_status?: number;
+  response_time_ms?: number;
+}): PlaygroundToken {
+  const db = getDb();
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const tokenHash = hashPlaygroundToken(data.token);
+  db.prepare(`
+    INSERT INTO playground_tokens
+      (id, user_id, api_username, login_url, token_hash, token_value, token_preview,
+       response_status, response_time_ms, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    id,
+    data.user_id,
+    data.api_username ?? null,
+    data.login_url,
+    tokenHash,
+    data.token,
+    previewPlaygroundToken(data.token),
+    data.response_status ?? null,
+    data.response_time_ms ?? null,
+    now,
+  );
+
+  return db.prepare('SELECT * FROM playground_tokens WHERE id = ?').get(id) as PlaygroundToken;
+}
+
+export function getPlaygroundTokenByValue(token: string): PlaygroundToken | null {
+  return getDb().prepare(`
+    SELECT * FROM playground_tokens
+    WHERE token_hash = ?
+    ORDER BY created_at DESC
+    LIMIT 1
+  `).get(hashPlaygroundToken(token)) as PlaygroundToken | null;
+}
+
+export function logPlaygroundCall(data: {
+  user_id: string;
+  token_id?: string;
+  endpoint_id: string;
+  endpoint_title: string;
+  method: string;
+  path: string;
+  api_username?: string;
+  request_body?: string;
+  response_status?: number;
+  response_time_ms?: number;
+  response_preview?: string;
+  token_issued?: boolean;
+}): void {
+  try {
+    getDb().prepare(`
+      INSERT INTO playground_logs
+        (id, user_id, token_id, endpoint_id, endpoint_title, method, path, api_username,
+         request_body, response_status, response_time_ms, response_preview, token_issued, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      crypto.randomUUID(),
+      data.user_id,
+      data.token_id ?? null,
+      data.endpoint_id,
+      data.endpoint_title,
+      data.method,
+      data.path,
+      data.api_username ?? null,
+      data.request_body ?? null,
+      data.response_status ?? null,
+      data.response_time_ms ?? null,
+      data.response_preview ?? null,
+      data.token_issued ? 1 : 0,
+      new Date().toISOString(),
+    );
+  } catch { /* non-fatal */ }
+}
+
+export function getPlaygroundLogs(userId: string, limit = 50, offset = 0): PlaygroundLog[] {
+  return getDb().prepare(`
+    SELECT pl.*, pt.token_preview
+    FROM playground_logs pl
+    LEFT JOIN playground_tokens pt ON pt.id = pl.token_id
+    WHERE pl.user_id = ?
+    ORDER BY pl.created_at DESC LIMIT ? OFFSET ?
+  `).all(userId, limit, offset) as PlaygroundLog[];
+}
+
+export function getAllPlaygroundLogs(limit = 100, offset = 0): (PlaygroundLog & { user_email: string; user_name: string })[] {
+  return getDb().prepare(`
+    SELECT pl.*, u.email as user_email, u.name as user_name, pt.token_preview
+    FROM playground_logs pl
+    JOIN users u ON u.id = pl.user_id
+    LEFT JOIN playground_tokens pt ON pt.id = pl.token_id
+    ORDER BY pl.created_at DESC LIMIT ? OFFSET ?
+  `).all(limit, offset) as (PlaygroundLog & { user_email: string; user_name: string })[];
+}
+
+export function getPlaygroundTokens(userId: string, limit = 50, offset = 0): PlaygroundToken[] {
+  return getDb().prepare(`
+    SELECT * FROM playground_tokens
+    WHERE user_id = ?
+    ORDER BY created_at DESC LIMIT ? OFFSET ?
+  `).all(userId, limit, offset) as PlaygroundToken[];
+}
+
+export function getAllPlaygroundTokens(limit = 100, offset = 0): (PlaygroundToken & { user_email: string; user_name: string })[] {
+  return getDb().prepare(`
+    SELECT pt.*, u.email as user_email, u.name as user_name
+    FROM playground_tokens pt
+    JOIN users u ON u.id = pt.user_id
+    ORDER BY pt.created_at DESC LIMIT ? OFFSET ?
+  `).all(limit, offset) as (PlaygroundToken & { user_email: string; user_name: string })[];
+}
+
+export interface PlaygroundStats {
+  total_calls: number;
+  success_calls: number;
+  failed_calls: number;
+  tokens_issued: number;
+  avg_response_ms: number | null;
+  by_endpoint: { endpoint_id: string; endpoint_title: string; count: number; success: number }[];
+}
+
+export function getPlaygroundStats(userId?: string): PlaygroundStats {
+  const db = getDb();
+  const where = userId ? 'WHERE pl.user_id = ?' : '';
+  const params = userId ? [userId] : [];
+
+  const totals = db.prepare(`
+    SELECT
+      COUNT(*) as total_calls,
+      SUM(CASE WHEN response_status >= 200 AND response_status < 300 THEN 1 ELSE 0 END) as success_calls,
+      SUM(CASE WHEN response_status IS NULL OR response_status >= 400 THEN 1 ELSE 0 END) as failed_calls,
+      SUM(token_issued) as tokens_issued,
+      AVG(response_time_ms) as avg_response_ms
+    FROM playground_logs pl ${where}
+  `).get(...params) as { total_calls: number; success_calls: number; failed_calls: number; tokens_issued: number; avg_response_ms: number | null };
+
+  const byEndpoint = db.prepare(`
+    SELECT endpoint_id, endpoint_title,
+      COUNT(*) as count,
+      SUM(CASE WHEN response_status >= 200 AND response_status < 300 THEN 1 ELSE 0 END) as success
+    FROM playground_logs pl ${where}
+    GROUP BY endpoint_id, endpoint_title
+    ORDER BY count DESC
+  `).all(...params) as { endpoint_id: string; endpoint_title: string; count: number; success: number }[];
+
+  return { ...totals, by_endpoint: byEndpoint };
 }
