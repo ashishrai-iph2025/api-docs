@@ -80,6 +80,7 @@ export async function middleware(req: NextRequest) {
     pathname === '/' ||
     pathname === LOGIN_PATH ||
     pathname === '/intake-form' ||
+    pathname === '/field-intake-form' ||
     pathname.startsWith('/api/admin/auth/') ||
     pathname === '/api/admin/auth' ||
     pathname === '/api/admin/auth/direct-login' ||

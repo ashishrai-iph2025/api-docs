@@ -17,11 +17,15 @@ const navLinks = [
   { href: '/docs/support',      label: 'Support' },
 ];
 
+const HEADER_HIDDEN_PATHS = ['/intake-form', '/field-intake-form'];
+
 export function Header() {
   const pathname = usePathname();
   const router   = useRouter();
   const { setOpen } = useMobileNav();
   const [showChangePw, setShowChangePw] = useState(false);
+
+  if (HEADER_HIDDEN_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'))) return null;
 
   useEffect(() => {
     if (!pathname.startsWith('/docs')) return;
