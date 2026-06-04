@@ -441,7 +441,7 @@ export default function FieldIntakeFormPage() {
               <div className="section-notice">
                 <span className="badge">!</span>
                 <div className="body">
-                  <p>Complete this section only if a test purchase is required. Leave blank if not applicable. Images of products can be attached to your email alongside the PDF.</p>
+                  <p>Complete this section only if a test purchase is required. Leave blank if not applicable.</p>
                 </div>
               </div>
               <div className="field-grid">
