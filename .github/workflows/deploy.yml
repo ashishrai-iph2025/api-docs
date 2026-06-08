@@ -1,0 +1,47 @@
+name: Deploy api-docs
+
+# A merge into main is a push to main — that is the deploy trigger.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}   # allows a manual re-deploy from the Actions tab
+
+# Never let two deploys run at once; queue them instead of cancelling.
+concurrency:
+  group: deploy-api-docs-main
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Runs on the self-hosted runner installed on the EC2 box.
+    # The 'api-docs' label targets this specific runner.
+    runs-on: [self-hosted, api-docs]
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Restart app with pm2
+        run: |
+          # Deterministic: re-point pm2 at this freshly built workspace.
+          # ~1s downtime; for zero-downtime use a cluster-mode ecosystem file.
+          pm2 delete api-docs >/dev/null 2>&1 || true
+          pm2 start pnpm --name api-docs --cwd "$GITHUB_WORKSPACE" -- start
+          pm2 save
