@@ -1,20 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 320" fill="none">
-  <!-- Bar 1 — shortest -->
-  <polygon points="0,320 0,252 72,210 72,320" fill="#ffffff"/>
-  <!-- Bar 2 -->
-  <polygon points="95,320 95,185 167,143 167,320" fill="#ffffff"/>
-  <!-- Bar 3 -->
-  <polygon points="190,320 190,110 262,68 262,320" fill="#ffffff"/>
-  <!-- Bar 4 — large building -->
-  <polygon points="284,320 284,8 420,0 420,320" fill="#ffffff"/>
-  <!-- IP HOUSE wordmark -->
-  <text
-    x="460"
-    y="262"
-    font-family="'Arial Black','Arial Bold',Arial,sans-serif"
-    font-weight="900"
-    font-size="218"
-    letter-spacing="2"
-    fill="#ffffff"
-  >IP HOUSE</text>
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="houseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FC934C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FDB550;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#0D244B"/>
+  <polygon points="16,8 22,13 22,24 10,24 10,13" fill="url(#houseGrad)"/>
+  <rect x="12" y="15" width="3" height="3" fill="#0D244B" opacity="0.8"/>
+  <rect x="17" y="15" width="3" height="3" fill="#0D244B" opacity="0.8"/>
+  <polygon points="16,8 10,13 22,13" fill="#0D244B" opacity="0.15"/>
 </svg>
