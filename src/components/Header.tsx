@@ -17,7 +17,7 @@ const navLinks = [
   { href: '/docs/support',      label: 'Support' },
 ];
 
-const HEADER_HIDDEN_PATHS = ['/intake-form', '/field-intake-form'];
+const HEADER_HIDDEN_PATHS = ['/intake-form', '/field-intake-form', '/ocp-intake-form'];
 
 export function Header() {
   const pathname = usePathname();

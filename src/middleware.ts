@@ -80,6 +80,7 @@ export async function middleware(req: NextRequest) {
     pathname === '/' ||
     pathname === LOGIN_PATH ||
     pathname === '/intake-form' ||
+    pathname === '/ocp-intake-form' ||
     pathname === '/field-intake-form' ||
     pathname === '/Field_Intake_Form.html' ||
     pathname === '/Field_Intake_Form_Complete.html' ||
