@@ -412,7 +412,7 @@ export default function FieldIntakeFormPage() {
   return (
     <>
       <Script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" onLoad={() => setJspdfReady(true)} />
-
+      <div className="intake-page">
         <main className="page">
           <div className="form-head">
             <div className="eyebrow">INTAKE &gt; SCOPING &gt; ESTIMATE &gt; KICKOFF</div>
@@ -657,6 +657,7 @@ export default function FieldIntakeFormPage() {
             </button>
           </div>
         </div>
+      </div>
 
       {previewIndex !== null && productImages[previewIndex] && (
         <div className="img-modal-backdrop" onClick={() => setPreviewIndex(null)}>

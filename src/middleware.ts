@@ -81,8 +81,10 @@ export async function middleware(req: NextRequest) {
     pathname === LOGIN_PATH ||
     pathname === '/intake-form' ||
     pathname === '/ocp-intake-form' ||
+    pathname === '/ocp-intake-form-demo' ||
     pathname === '/field-intake-form' ||
     pathname === '/Field_Intake_Form.html' ||
+    pathname === '/OCP_Intake_Form_Demo.html' ||
     pathname === '/Field_Intake_Form_Complete.html' ||
     pathname.startsWith('/api/admin/auth/') ||
     pathname === '/api/admin/auth' ||

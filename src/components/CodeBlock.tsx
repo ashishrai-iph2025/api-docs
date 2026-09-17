@@ -6,14 +6,17 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-http';
 import { Check, Copy } from 'lucide-react';
+import clsx from 'clsx';
 
 interface CodeBlockProps {
   code: string;
   language?: 'json' | 'bash' | 'http' | 'plain';
   title?: string;
+  /** Render flush inside a surrounding panel (no own margin, border or radius). */
+  embedded?: boolean;
 }
 
-export function CodeBlock({ code, language = 'json', title }: CodeBlockProps) {
+export function CodeBlock({ code, language = 'json', title, embedded = false }: CodeBlockProps) {
   const ref = useRef<HTMLElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -30,7 +33,12 @@ export function CodeBlock({ code, language = 'json', title }: CodeBlockProps) {
   };
 
   return (
-    <div className="my-4 overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-code-bg)]">
+    <div
+      className={clsx(
+        'overflow-hidden bg-[var(--color-code-bg)]',
+        !embedded && 'my-4 rounded-md border border-[var(--color-border)]'
+      )}
+    >
       {title && (
         <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-card)] px-4 py-2">
           <span className="text-[12px] font-medium text-[var(--color-fg-muted)]">{title}</span>
