@@ -104,7 +104,7 @@ const initialForm = {
   allowlist_available: 'Yes',
   allowlist_details: 'official-acmestreaming.example, Acme Streaming YouTube channel, verified Acme Streaming social handles',
   expected_deliverables: ['Weekly Report', 'Dashboard', 'Executive Summary'] as string[],
-  reporting_frequency: ['Event-based'] as string[],
+  reporting_frequency: ['Monthly'] as string[],
   additional_context: 'The 12 titles are new releases.',
   ocp_poc_name: '',
   proposed_resources_hours: '',
