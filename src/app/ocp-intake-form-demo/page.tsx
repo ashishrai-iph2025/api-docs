@@ -3,7 +3,7 @@
 import Script from 'next/script';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const DRAFT_KEY = 'ocp_intake_demo_draft_v1';
+const DRAFT_KEY = 'ocp_intake_demo_draft_v2';
 
 const CONTENT_TYPES = [
   'Live Piracy',
@@ -86,31 +86,31 @@ const initialForm = {
   cost_proposal: 'Yes',
   requested_start_date: '2026-09-22',
   deadline: '2026-10-15',
-  content_type: ['VOD', 'Live Piracy'] as string[],
+  content_type: ['VOD'] as string[],
   content_type_other: '',
-  operational_services: ['Detection & Disruption', 'Monitoring Only'] as string[],
+  operational_services: ['Detection & Disruption'] as string[],
   operational_services_other: '',
   service_request_type: 'Ongoing Monitoring',
   num_titles_events: '12',
   title_event_names: 'Midnight Horizon (S1–S3), Summer Grand Prix Live Stream, Nova Studios Film Library',
-  monitoring_period: 'Monthly',
+  monitoring_period: 'Quarterly',
   monitoring_period_other: '',
   platforms: ['Pirate Websites', 'Search Engines', 'UGC / Social Media Platforms'] as string[],
   platforms_other: '',
-  platform_names: 'example-streamz.io, popcorn-mirror.net, assorted Telegram channels',
+  platform_names: 'YouTube, Tiktok, Cyber Lockers, Telegram',
   geography: 'Global (specify priority regions)',
   geography_details: 'North America, Western Europe, Southeast Asia',
   language_requirements: 'English, Spanish, Portuguese',
   allowlist_available: 'Yes',
   allowlist_details: 'official-acmestreaming.example, Acme Streaming YouTube channel, verified Acme Streaming social handles',
   expected_deliverables: ['Weekly Report', 'Dashboard', 'Executive Summary'] as string[],
-  reporting_frequency: 'Weekly',
-  additional_context: 'Priority is live-sports piracy during the Summer Grand Prix broadcast window; escalate high-traffic streams within 2 hours of detection.',
-  ocp_poc_name: 'Taylor Chen',
-  proposed_resources_hours: '40 hrs / month',
-  proposed_commercials: 'USD 4,500/month retainer, 3-month minimum term',
-  kickoff_date: '2026-09-25',
-  internal_notes: 'Coordinate with Legal before confirming the allowlist. Monitor the Summer Grand Prix broadcast window closely for the first two weeks.',
+  reporting_frequency: ['Event-based'] as string[],
+  additional_context: 'The 12 titles are new releases.',
+  ocp_poc_name: '',
+  proposed_resources_hours: '',
+  proposed_commercials: '',
+  kickoff_date: '',
+  internal_notes: '',
 };
 
 const sections = [
@@ -156,7 +156,7 @@ export default function OcpIntakeFormDemoPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  function toggleArray(name: 'content_type' | 'operational_services' | 'platforms' | 'expected_deliverables', value: string, checked: boolean) {
+  function toggleArray(name: 'content_type' | 'operational_services' | 'platforms' | 'expected_deliverables' | 'reporting_frequency', value: string, checked: boolean) {
     setForm((prev) => ({
       ...prev,
       [name]: checked ? [...prev[name], value] : prev[name].filter((v) => v !== value),
@@ -172,7 +172,7 @@ export default function OcpIntakeFormDemoPage() {
   const progress = [
     !!form.date.trim() && !!form.requestor_name.trim() && !!form.department.trim() && !!form.client_name.trim(),
     form.content_type.length > 0 && form.operational_services.length > 0 && !!form.service_request_type && !!form.num_titles_events.trim(),
-    form.platforms.length > 0 && !!form.geography.trim() && form.expected_deliverables.length > 0 && !!form.reporting_frequency,
+    form.platforms.length > 0 && !!form.geography.trim() && form.expected_deliverables.length > 0 && form.reporting_frequency.length > 0,
     !!form.ocp_poc_name.trim(),
   ];
 
@@ -314,7 +314,7 @@ export default function OcpIntakeFormDemoPage() {
     addFullField('Language Requirements', form.language_requirements || '—');
     addFieldPair('Allowlist Available', form.allowlist_available || '—', 'Allowlist Details', form.allowlist_details || '—');
     addFullField('Expected Deliverables', form.expected_deliverables.join(', '));
-    addFullField('Reporting Frequency', form.reporting_frequency);
+    addFullField('Reporting Frequency', form.reporting_frequency.join(', '));
     addFullField('Additional Details / Background / Context', form.additional_context || '—');
 
     addSection('05', 'For Internal Use Only');
@@ -538,17 +538,15 @@ export default function OcpIntakeFormDemoPage() {
                   onChange={(v, checked) => toggleArray('expected_deliverables', v, checked)}
                 />
 
-                <div className="field span-2">
-                  <label>Reporting Frequency <span className="req">*</span></label>
-                  <div className="chip-group">
-                    {REPORTING_FREQUENCIES.map((opt) => (
-                      <label key={opt}>
-                        <input type="radio" name="reporting_frequency" value={opt} checked={form.reporting_frequency === opt} onChange={() => setField('reporting_frequency', opt)} />
-                        {opt}
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                <CheckboxField
+                  id="reporting_frequency"
+                  label="Reporting Frequency"
+                  required
+                  span
+                  values={form.reporting_frequency}
+                  options={REPORTING_FREQUENCIES}
+                  onChange={(v, checked) => toggleArray('reporting_frequency', v, checked)}
+                />
 
                 <TextareaField id="additional_context" label="Any Other Details / Background / Context" value={form.additional_context} onChange={(v) => setField('additional_context', v)} placeholder="[provide any additional information, background or context that would help the team]" span rows={4} />
 
